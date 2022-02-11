@@ -16,6 +16,6 @@ namespace AdoptPet.Models
         public string Path { get; set; }
 
         public Guid AdId { get; set; }
-
+        public Ad Ad { get; set; }
     }
 }

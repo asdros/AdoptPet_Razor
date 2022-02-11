@@ -60,9 +60,9 @@ namespace AdoptPet.Models
 
         public DateTime? LastModified { get; set; }
 
-        public AdStatus Status { get; set; }
+ //       public AdStatus Status { get; set; }
 
-        public string OwnerId { get; set; }
+ //       public string OwnerId { get; set; }
 
         [Required(ErrorMessage = "Rasa zwierzęcia jest wymagana.")]
         [ForeignKey(nameof(Breed))]
@@ -74,13 +74,7 @@ namespace AdoptPet.Models
         public int PlaceId { get; set; }
         public Place Place { get; set; }
 
-        public IEnumerable<Image> Images { get; set; } //gallery
-
-        [Required(ErrorMessage = "Wybór zdjęcia tytułowego jest wymagany.")]
-        [ForeignKey(nameof(Image))]
-        public Guid ImageId { get; set; }
-        public Image Image { get; set; }
-
+        public ICollection<Image> Images { get; set; }
 
         //generate unique link to ad
         public static string GenerateLink(string title)
