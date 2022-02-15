@@ -74,7 +74,7 @@ namespace AdoptPet.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Places",
+                name: "Place",
                 columns: table => new
                 {
                     PlaceId = table.Column<int>(type: "int", nullable: false)
@@ -84,9 +84,9 @@ namespace AdoptPet.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Places", x => x.PlaceId);
+                    table.PrimaryKey("PK_Place", x => x.PlaceId);
                     table.ForeignKey(
-                        name: "FK_Places_District_DistrictId",
+                        name: "FK_Place_District_DistrictId",
                         column: x => x.DistrictId,
                         principalTable: "District",
                         principalColumn: "DistrictId",
@@ -118,9 +118,9 @@ namespace AdoptPet.Data.Migrations
                         principalColumn: "BreedId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Ad_Places_PlaceId",
+                        name: "FK_Ad_Place_PlaceId",
                         column: x => x.PlaceId,
-                        principalTable: "Places",
+                        principalTable: "Place",
                         principalColumn: "PlaceId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -203,17 +203,17 @@ namespace AdoptPet.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Places",
+                table: "Place",
                 columns: new[] { "PlaceId", "DistrictId", "Name" },
                 values: new object[] { 1, 1, "Złotów" });
 
             migrationBuilder.InsertData(
-                table: "Places",
+                table: "Place",
                 columns: new[] { "PlaceId", "DistrictId", "Name" },
                 values: new object[] { 2, 1, "Piła" });
 
             migrationBuilder.InsertData(
-                table: "Places",
+                table: "Place",
                 columns: new[] { "PlaceId", "DistrictId", "Name" },
                 values: new object[] { 3, 2, "Płock" });
 
@@ -278,8 +278,8 @@ namespace AdoptPet.Data.Migrations
                 column: "AdId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Places_DistrictId",
-                table: "Places",
+                name: "IX_Place_DistrictId",
+                table: "Place",
                 column: "DistrictId");
 
             migrationBuilder.CreateIndex(
@@ -303,7 +303,7 @@ namespace AdoptPet.Data.Migrations
                 name: "Breed");
 
             migrationBuilder.DropTable(
-                name: "Places");
+                name: "Place");
 
             migrationBuilder.DropTable(
                 name: "Animal");

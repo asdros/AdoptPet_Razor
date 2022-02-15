@@ -11,6 +11,6 @@ namespace AdoptPet.Models
 
         [ForeignKey(nameof(District))]
         public int DistrictId { get; set; }
-        public District District { get; set; }
+        public virtual District District { get; set; }
     }
 }

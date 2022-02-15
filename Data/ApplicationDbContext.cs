@@ -35,7 +35,7 @@ namespace AdoptPet.Data
 
         public DbSet<Province> Province { get; set; }
         public DbSet<District> District { get; set; }
-        public DbSet<Place> Places { get; set; }
+        public DbSet<Place> Place { get; set; }
 
         public DbSet<Ad> Ad { get; set; }
         public DbSet<Animal> Animal { get; set; }

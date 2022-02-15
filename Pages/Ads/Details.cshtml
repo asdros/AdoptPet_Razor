@@ -1,0 +1,99 @@
+﻿@page
+@model AdoptPet.Pages.Ads.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Szczegóły</h1>
+
+<div>
+<dl class="row">
+<dd class="col-sm-8">   
+<h4>@Html.DisplayFor(model => model.Ad.Title)</h4>
+    </dd> 
+    <dd class="col-sm-2">
+        <label>
+            @Html.DisplayFor(model => model.Ad.AvailableFrom)
+        </label>
+    </dd>
+    <dd class="col-sm-2">
+<a asp-page="./Edit" asp-route-id="@Model.Ad.Id" title="Dodaj do ogłoszeń obserwowanych">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bag-heart" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5Zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0ZM14 14V5H2v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1ZM8 7.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"></path>
+</svg>
+ </a>
+          </dd>
+    </dl>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-1">
+            Opis
+        </dt>
+        <dd class="col-sm-5">
+            @Html.DisplayFor(model => model.Ad.Description)
+        </dd>
+                <dd class="col-sm-6" style="padding-bottom:30px">
+                    <div class="carousel slide>
+                        @foreach(var gallery in Model.Images)
+                        {
+                        <div class="item @if(Model.Images.First()==gallery) {<text>active</text>}">
+                        @foreach(var image in Model.Images)
+            {
+                <img src="/images/@Model.Ad.Id/@image.Name" id="myImg" style="width: 100%; height: auto" alt="@image.Name"/>
+                        }
+                </div>
+            }
+              <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+            </div>
+        </dd>
+        </dl>
+            <dl class="row">
+
+        <dt class="col-sm-2">
+        Sterylizacja
+        </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.Ad.Sterilization)
+        </dd>
+        <dt class="col-sm-2">
+          Odrobaczenie
+        </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.Ad.Deworming)
+        </dd>
+
+                <dt class="col-sm-2">
+            Gatunek, rasa
+        </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.Ad.Breed.Animal.Species),
+            @Html.DisplayFor(model => model.Ad.Breed.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Lokalizacja
+        </dt>
+        <dd class="col-sm-6">
+            @Html.DisplayFor(model => model.Ad.Place.Name), powiat
+            @Html.DisplayFor(model => model.Ad.Place.District.Name),
+            @Html.DisplayFor(model => model.Ad.Place.District.Province.Name),
+        </dd>
+    </dl>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Ad.Id">Edytuj</a> |
+    <a asp-page="./Index">Wróć do strony głównej</a>
+</div>
+</div>
+
+
+<div id="myModal" class="modal">
+   <img class="modal-content" id="img01">
+<div id="caption"></div>
+</div>

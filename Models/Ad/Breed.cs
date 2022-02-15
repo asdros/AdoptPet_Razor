@@ -13,6 +13,6 @@ namespace AdoptPet.Models
 
         [ForeignKey(nameof(Animal))]
         public int AnimalId { get; set; }
-        public Animal Animal { get; set; }
+        public virtual Animal Animal { get; set; }
     }
 }

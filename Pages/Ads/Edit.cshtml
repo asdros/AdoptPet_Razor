@@ -1,0 +1,75 @@
+﻿@page
+@model AdoptPet.Pages.Ads.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Ad</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Ad.Id" />
+            <div class="form-group">
+                <label asp-for="Ad.Title" class="control-label"></label>
+                <input asp-for="Ad.Title" class="form-control" />
+                <span asp-validation-for="Ad.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ad.NormalizedLink" class="control-label"></label>
+                <input asp-for="Ad.NormalizedLink" class="form-control" />
+                <span asp-validation-for="Ad.NormalizedLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ad.Description" class="control-label"></label>
+                <input asp-for="Ad.Description" class="form-control" />
+                <span asp-validation-for="Ad.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Ad.Sterilization" /> @Html.DisplayNameFor(model => model.Ad.Sterilization)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Ad.Deworming" /> @Html.DisplayNameFor(model => model.Ad.Deworming)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ad.AvailableFrom" class="control-label"></label>
+                <input asp-for="Ad.AvailableFrom" class="form-control" />
+                <span asp-validation-for="Ad.AvailableFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ad.LastModified" class="control-label"></label>
+                <input asp-for="Ad.LastModified" class="form-control" />
+                <span asp-validation-for="Ad.LastModified" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ad.BreedId" class="control-label"></label>
+                <select asp-for="Ad.BreedId" class="form-control" asp-items="ViewBag.BreedId"></select>
+                <span asp-validation-for="Ad.BreedId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ad.PlaceId" class="control-label"></label>
+                <select asp-for="Ad.PlaceId" class="form-control" asp-items="ViewBag.PlaceId"></select>
+                <span asp-validation-for="Ad.PlaceId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

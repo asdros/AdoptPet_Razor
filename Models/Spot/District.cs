@@ -11,6 +11,6 @@ namespace AdoptPet.Models
 
         [ForeignKey(nameof(Province))]
         public int ProvinceId { get; set; }
-        public Province Province { get; set; }
+        public virtual Province Province { get; set; }
     }
 }

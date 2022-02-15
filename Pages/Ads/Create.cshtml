@@ -1,0 +1,95 @@
+﻿@page
+@model AdoptPet.Pages.Ads.CreateModel
+@{
+ViewData["Title"] = "Dodaj nowe ogłoszenie";
+}
+<h1>Dodaj nowe</h1>
+<h4>ogłoszenie</h4>
+<hr />
+<div class="row">
+   <form method="post">
+      <div class="col-md-4">
+         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+         <div class="form-group">
+            <label asp-for="Ad.Title" class="control-label">Tytuł</label>
+            <input asp-for="Ad.Title" class="form-control" />
+            <span asp-validation-for="Ad.Title" class="text-danger"></span>
+         </div>
+      </div>
+      <div class="col-md-8">
+         <div class="form-group">
+            <label asp-for="Ad.Description" class="control-label">Opis</label>
+            <textarea asp-for="Ad.Description" class="form-control" cols="100" rows="10"></textarea>
+            <span asp-validation-for="Ad.Description" class="text-danger"></span>
+         </div>
+      </div>
+      <div class="col-md-4">
+         <div class="form-group form-check">
+            <label class="form-check-label">
+            <input class="form-check-input" asp-for="Ad.Sterilization" /> Sterylizacja
+            </label>
+         </div>
+         <div class="form-group form-check">
+            <label class="form-check-label">
+            <input class="form-check-input" asp-for="Ad.Deworming" />Odrobaczenie
+            </label>
+         </div>
+         <div class="form-group">
+            <label asp-for="Ad.Breed.Animal.Id" class="control-label">Gatunek</label>
+            <select asp-for="Ad.Breed.Animal.Id" class="form-control" asp-items="ViewBag.AnimalId">
+                <option value="">-- Wybierz gatunek --</option>
+            </select>
+         </div>
+         <div class="form-group">
+            <label asp-for="Ad.BreedId" class="control-label">Rasa</label>
+            <select asp-for="Ad.BreedId" class="form-control" asp-items="ViewBag.BreedId">
+                <option value="">-- Wybierz rasę --</option>                
+            </select>
+         </div>
+         <div class="form-group">
+            <label asp-for="Ad.PlaceId" class="control-label">Miejscowość</label>
+            <input type="text" id="placeName" placeholder="Wpisz nazwę miejscowości">
+            <input type="hidden" id="hiddenPlaceId" asp-items="ViewBag.PlaceId" asp-for="Ad.PlaceId" />
+         </div>
+         <div class="form-group">
+            <input type="submit" value="Dodaj ogłoszenie" class="btn btn-primary" />
+         </div>
+      </div>
+   </form>
+   <div>
+      <br />
+      <a asp-page="Index">Wróc do strony głównej</a>
+   </div>
+</div>
+<script>
+   $(document).ready(function () {
+   var auto_array = {};
+   var label='';
+   $('#placeName').autocomplete({
+   source: function (request, response) {
+   $.ajax({
+   url: '/Ads/AutoCompletePlaces',
+   dataType: 'json',
+   data: request,
+   success: function (data) {
+   response(data.map(function (value) {
+   label=value.fullPlaceName;
+   auto_array[label] = value.placeId;
+   return label;
+   }));
+   }
+   });
+   },
+   minLength: 3,
+   position: {my: "left center", at: "right top"},
+   
+   select: function(event, ui) {
+   console.log(auto_array);
+   $('#hiddenPlaceId').val(auto_array[ui.item.value]);
+   }
+   });
+   });
+</script>
+@section Scripts {
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

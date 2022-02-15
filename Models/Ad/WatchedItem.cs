@@ -10,7 +10,7 @@ namespace AdoptPet.Models
 
         [ForeignKey(nameof(Ad))]
         public Guid AdId { get; set; }
-        public Ad Ad { get; set; }
+        public virtual Ad Ad { get; set; }
 
         public string OwnerId { get; set; }
     }

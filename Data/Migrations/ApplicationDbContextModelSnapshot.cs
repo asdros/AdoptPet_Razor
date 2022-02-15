@@ -286,7 +286,7 @@ namespace AdoptPet.Data.Migrations
 
                     b.HasIndex("DistrictId");
 
-                    b.ToTable("Places");
+                    b.ToTable("Place");
 
                     b.HasData(
                         new

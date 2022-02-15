@@ -1,0 +1,68 @@
+﻿@page
+@model AdoptPet.Pages.Ads.IndexModel
+
+@{
+    ViewData["Title"] = "AdoptPet";
+}
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ad[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ad[0].AvailableFrom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ad[0].Breed.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ad[0].Place)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Ad) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvailableFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Breed.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Place.Name)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-link="@item.NormalizedLink">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+    </table>
+
+
+        <div class="row">
+            @foreach(var item in Model.Ad)
+    {
+        <div class="col-sm">
+            <div class="posterImage" style="width: 316px; height: 256px;">
+                              <a asp-page="./Details" asp-route-link="@item.NormalizedLink">
+        @*        <img src="/images/@item.Id/@item.Images.SingleOrDefault().Name" id="myImg" style="width: 100%; height: 100%" alt="@item.Images.SingleOrDefault().Name"/>*@
+                </a>
+                <p>@item.Title</p>
+
+            </div>
+    </div>
+    }
+    </div>

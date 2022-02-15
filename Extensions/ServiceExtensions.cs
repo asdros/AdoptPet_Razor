@@ -12,11 +12,13 @@ namespace AdoptPet.Extensions
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
             services.AddDbContext<ApplicationDbContext>(options =>
             {
+                options.UseLazyLoadingProxies();
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
                 options.EnableSensitiveDataLogging(true);
             });
 
         public static void ConfigureLoggerService(this IServiceCollection services) =>
             services.AddScoped<ILoggerManager, LoggerManager>();
+
     }
 }

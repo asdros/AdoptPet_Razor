@@ -67,14 +67,14 @@ namespace AdoptPet.Models
         [Required(ErrorMessage = "Rasa zwierzęcia jest wymagana.")]
         [ForeignKey(nameof(Breed))]
         public int BreedId { get; set; }
-        public Breed Breed { get; set; }
+        public virtual Breed Breed { get; set; }
 
         [Required(ErrorMessage = "Miejsce jest wymagane.")]
         [ForeignKey(nameof(Place))]
         public int PlaceId { get; set; }
-        public Place Place { get; set; }
+        public virtual Place Place { get; set; }
 
-        public ICollection<Image> Images { get; set; }
+        public virtual ICollection<Image> Images { get; set; }
 
         //generate unique link to ad
         public static string GenerateLink(string title)

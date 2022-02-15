@@ -12,7 +12,7 @@ namespace AdoptPet.Models
         [Required(ErrorMessage = "Typ zwierzęcia jest wymagany.")]
         public string Species { get; set; }
 
-        public ICollection<Breed> Breeds { get; set; }
+        public virtual ICollection<Breed> Breeds { get; set; }
 
     }
 }
