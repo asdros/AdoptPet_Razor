@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace AdoptPet.Models
 {
@@ -8,9 +9,9 @@ namespace AdoptPet.Models
         [Column("BreedId")]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Rasa zwierzęcia jest wymagana.")]
         public string Name { get; set; }
 
+        [JsonIgnore]
         [ForeignKey(nameof(Animal))]
         public int AnimalId { get; set; }
         public virtual Animal Animal { get; set; }

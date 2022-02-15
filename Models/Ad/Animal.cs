@@ -9,10 +9,9 @@ namespace AdoptPet.Models
         [Column("AnimalId")]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Typ zwierzęcia jest wymagany.")]
         public string Species { get; set; }
 
-        public virtual ICollection<Breed> Breeds { get; set; }
+     //   public virtual ICollection<Breed> Breeds { get; set; }
 
     }
 }

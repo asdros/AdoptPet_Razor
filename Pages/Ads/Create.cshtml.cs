@@ -23,8 +23,9 @@ namespace AdoptPet.Pages.Ads
         public IActionResult OnGet()
         {
         ViewData["AnimalId"] = new SelectList(_context.Animal, "Id", "Species");
-        ViewData["BreedId"] = new SelectList(_context.Breed.Where(b=>b.AnimalId.Equals(), "Id", "Name");
-        ViewData["PlaceId"] = new SelectList(_context.Place, "Id", "Id");
+        ViewData["BreedId"] = new SelectList(_context.Breed, "Id", "Name");
+    //    ViewData["PlaceId"] = new SelectList(_context.Place, "Id", "Id");
+
             return Page();
         }
 
@@ -34,10 +35,15 @@ namespace AdoptPet.Pages.Ads
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
+            var json = new JsonResult(Ad);
             if (!ModelState.IsValid)
             {
+                var errors = ModelState.Select(x => x.Value.Errors)
+                          .Where(y => y.Count > 0)
+                          .ToList();
                 return Page();
             }
+
             Ad.AvailableFrom = DateTime.Now;
             Ad.NormalizedLink = Ad.GenerateLink(Ad.Title);
 
@@ -47,4 +53,5 @@ namespace AdoptPet.Pages.Ads
             return RedirectToPage("./Index");
         }
     }
+
 }

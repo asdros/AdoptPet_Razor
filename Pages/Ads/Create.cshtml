@@ -3,8 +3,8 @@
 @{
 ViewData["Title"] = "Dodaj nowe ogłoszenie";
 }
-<h1>Dodaj nowe</h1>
-<h4>ogłoszenie</h4>
+<h4>Dodaj nowe ogłoszenie</h4>
+     <a asp-page="Index">Wróć do strony głównej</a>
 <hr />
 <div class="row">
    <form method="post">
@@ -36,32 +36,60 @@ ViewData["Title"] = "Dodaj nowe ogłoszenie";
          </div>
          <div class="form-group">
             <label asp-for="Ad.Breed.Animal.Id" class="control-label">Gatunek</label>
-            <select asp-for="Ad.Breed.Animal.Id" class="form-control" asp-items="ViewBag.AnimalId">
+@*            <select asp-for="Ad.Breed.AnimalId" class="form-control" id="animalId" asp-items="ViewBag.AnimalId">
                 <option value="">-- Wybierz gatunek --</option>
+            </select>*@
+            <select id="animalId" class="form-control" asp-items="(IEnumerable<SelectListItem>)@ViewData["AnimalId"]">
+                   <option value="">-- Wybierz gatunek --</option>
             </select>
+
+
          </div>
          <div class="form-group">
             <label asp-for="Ad.BreedId" class="control-label">Rasa</label>
-            <select asp-for="Ad.BreedId" class="form-control" asp-items="ViewBag.BreedId">
+            <select asp-for="Ad.BreedId" class="form-control" id="breedId" >
                 <option value="">-- Wybierz rasę --</option>                
             </select>
+             <span asp-validation-for="Ad.BreedId" class="text-danger"></span>
          </div>
          <div class="form-group">
             <label asp-for="Ad.PlaceId" class="control-label">Miejscowość</label>
-            <input type="text" id="placeName" placeholder="Wpisz nazwę miejscowości">
-            <input type="hidden" id="hiddenPlaceId" asp-items="ViewBag.PlaceId" asp-for="Ad.PlaceId" />
+            <input type="text" id="placeName" class="form-control" placeholder="Wpisz nazwę miejscowości">
+                    <span asp-validation-for="Ad.PlaceId" class="text-danger"></span>
+            <input type="text" style="display:none" class="hiddenInput" id="hiddenPlaceId" asp-for="Ad.PlaceId" />
          </div>
          <div class="form-group">
             <input type="submit" value="Dodaj ogłoszenie" class="btn btn-primary" />
          </div>
       </div>
    </form>
-   <div>
-      <br />
-      <a asp-page="Index">Wróc do strony głównej</a>
-   </div>
 </div>
 <script>
+$(document).ready(function(){
+    $("#breedId").prop("disabled",true);
+    $("#animalId").change(function(){
+        var id = $("#animalId").val();
+        $.ajax({
+            cache:false,
+            type:"GET",
+            url:'/Ads/GetBreeds',
+            data:{"animalIdVal":id},
+            success:function(json,textStatus){
+                $("#breedId").empty();
+                json = json || {};
+                for(var i=0;i<json.length;i++){
+                     $("#breedId").append('<option value="' + json[i].id + '">' + json[i].name + '</option>');  
+                }
+                $("#breedId").prop("disabled",false);
+            },
+            error:function(){
+                alert("Data not found");
+            }
+        });
+    });
+});
+
+
    $(document).ready(function () {
    var auto_array = {};
    var label='';

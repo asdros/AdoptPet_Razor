@@ -1,5 +1,8 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+.hiddenInput {
+    display: none;
+}
 
 #myImg {
     border-radius: 5px;
@@ -10,9 +13,9 @@ for details on configuring this project to bundle and minify static web assets. 
     margin-right: auto
 }
 
-#myImg:hover {
-    opacity: 0.7;
-}
+    #myImg:hover {
+        opacity: 0.7;
+    }
 
 .ui-autocomplete {
     max-height: 200px;
@@ -34,9 +37,9 @@ for details on configuring this project to bundle and minify static web assets. 
     cursor: pointer;
 }
 
-.check-box:checked {
-    background-color: darkgreen;
-}
+    .check-box:checked {
+        background-color: darkgreen;
+    }
 
 a.navbar-brand {
     white-space: normal;
