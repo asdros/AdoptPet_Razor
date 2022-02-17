@@ -4,13 +4,31 @@ for details on configuring this project to bundle and minify static web assets. 
     display: none;
 }
 
+#gridAd {
+    width: 316px;
+    /*    height: 256px; */
+    position: relative;
+    max-height: 500px;
+    margin-top: 10px;
+}
+
+div.posterImage {
+    height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;
+    background-color: #FFFD88;
+}
+
 #myImg {
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
     display: block;
     margin-left: auto;
-    margin-right: auto
+    margin-right: auto;
+    max-width: 100%;
+    max-height: 100%;
 }
 
     #myImg:hover {
