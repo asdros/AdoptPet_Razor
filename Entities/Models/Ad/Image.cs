@@ -1,0 +1,19 @@
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Entities.Models
+{
+    public class Image
+    {
+        [Column("ImageId")]
+        public Guid Id { get; set; }
+
+        public bool isPoster { get; set; }
+
+        public string Name { get; set; }
+
+        public Guid AdId { get; set; }
+        public virtual Ad Ad { get; set; }
+    }
+}

@@ -363,7 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # exclude everything
-AdoptPet/wwwroot/images/*
+/wwwroot/images/*
 
 # exception to the rule
 !/wwwroot/images/.gitkeep 
