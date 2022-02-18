@@ -23,7 +23,7 @@ namespace AdoptPet.Pages.Ads
         {
             List<Breed> breeds = _context.Breed.Where(b => b.AnimalId.Equals(animalIdVal))
                         .ToList();
-
+            breeds.Insert(0, new Breed { Name = "-- Wybierz rasê --" });
             return new JsonResult(breeds);
         }
     }

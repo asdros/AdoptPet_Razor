@@ -7,7 +7,8 @@
 <a asp-page="Index">Wróć do strony głównej</a>
 <hr />
 <div class="row">
- <form method="post" enctype="multipart/form-data">
+ <form method="post" enctype="multipart/form-data"  onsubmit="return(validateImages());">
+ <div class="row">
   <div class="col-md-4">
    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
    <div class="form-group">
@@ -16,16 +17,13 @@
 	<span asp-validation-for="Ad.Title" class="text-danger"></span>
    </div>
   </div>
+  </div>
   <div class="row">
    <div class="col-md-8">
 	<div class="form-group">
 	 <label asp-for="Ad.Description" class="control-label">Opis</label>
 	 <textarea asp-for="Ad.Description" class="form-control" cols="100" rows="10"></textarea>
 	 <span asp-validation-for="Ad.Description" class="text-danger"></span>
-	</div>
-   </div>
-   <div class="col-md-4">
-	<div id="image-holder">
 	</div>
    </div>
   </div>
@@ -49,11 +47,11 @@
 	  </select>
 	 </div>
 	 <div class="form-group">
-	  <label asp-for="Ad.BreedId" class="control-label">Rasa</label>
+	  <label asp-for="Ad.BreedId" class="control-label" for="breedAd">Rasa</label>
 	  <select asp-for="Ad.BreedId" class="form-control" id="breedId">
-	   <option value="">-- Wybierz rasę --</option>
 	  </select>
 	  <span asp-validation-for="Ad.BreedId" class="text-danger"></span>
+		@Html.ValidationMessageFor(Model => Model.Ad.BreedId)
 	 </div>
 	</div>
    </div>
@@ -61,16 +59,23 @@
 	<label asp-for="Ad.PlaceId" class="control-label">Miejscowość</label>
 	<input type="text" id="placeName" class="form-control" placeholder="Wpisz nazwę miejscowości">
 	<span asp-validation-for="Ad.PlaceId" class="text-danger"></span>
-	<input type="text" style="display:none" class="hiddenInput" id="hiddenPlaceId" asp-for="Ad.PlaceId" />
+@*	<input type="text" style="display:none" class="hiddenInput" id="hiddenPlaceId" asp-for="Ad.PlaceId" />*@
+	@Html.TextBoxFor(Model => Model.Ad.PlaceId, new { id="hiddenPlaceId" ,style = "visibility:hidden"})
+   </div>
+   </div>
+   <div class="row justify-content-center" id="image-holder">
+	
+	   
    </div>
    <div class="col-md-4">
 	<label class="control-label">Zdjęcia</label>
 	<input id="imageUpload" type="file" asp-for="Images" accept=".jpg, .jpeg, .png" multiple />
+	<br /><br />
    </div>
    <div class="form-group">
 	<input type="submit" value="Dodaj ogłoszenie" class="btn btn-primary" />
    </div>
-  </div>
+ 
  </form>
 </div>
 <script>
@@ -78,7 +83,11 @@
 	imagePreview();
 	breedsDropDownList();
 	autocompletePlaceInput();
+	$('#breedId1').click(function(){
+		refreshAfterValidation();
+	});
  });
+ 	validateImages();
 </script>
 @section Scripts {
 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

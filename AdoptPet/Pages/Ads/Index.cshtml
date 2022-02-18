@@ -22,13 +22,14 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Ad[0].Place)
-            </th>
-            <th></th>
+            </th>  
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model.Ad) {
-        <tr>
+    var tm = "#myModal" + item.Id;
+        var mid = "myModal" + item.Id;    
+    <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
@@ -42,10 +43,34 @@
                 @Html.DisplayFor(modelItem => item.Place.Name)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-link="@item.NormalizedLink">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-                <a asp-asp-route-id="@item.Id" data-toggle="modal" data-target="#deleteModal">Usuń modal...</a>
+                <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Edytuj</a> |
+                <a asp-page="./Details" asp-route-link="@item.NormalizedLink" class="btn btn-info btn-sm">Szczegóły</a> |
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="@tm">
+                    Usuń
+                </button>
+
+                <div class="modal fade" id="@mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                    <h5 class="modal-title">Usuwanie ogłoszenia</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                            </div>
+                            <div class="modal-body">
+                                    Czy na pewno usunąć ogłoszenie?
+                   @Html.DisplayFor(modelItem=>item.Title)
+                            </div>
+                            <div class="modal-footer">
+                                        <form asp-page-handler="delete" asp-route-Id="@item.Id" method="post">
+            <button class="btn btn-danger">Usuń</button>
+        </form>
+                                <button type="button" class="btn btn-dark" data-dismiss="modal">Anuluj</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </td>
         </tr>
 }
@@ -75,18 +100,40 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Usunięcie ogłoszenia</h5>
+                    <h5 class="modal-title">Usuwanie ogłoszenia</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    ciało modalu!!!!!!!!!!!!!!!!111
+                    Czy na pewno usunąć ogłoszenie?
+                    <div class="adName">
+                        
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                        <form method="post">
+                            <input type="hidden" asp-for="AdToDelete.Id" />
+                            <input type="submit" value="Delete" class="btn btn-danger" /> |
+                        </form>
                     <button type="button" class="btn btn-danger">Usuń</button>             
                 </div>
             </div>
         </div>
     </div>
+
+
+    <script>
+        $(document).ready(function(){
+    $(document).on("click",".deleteModal",OpenModalPopUp);   
+});
+
+function OpenModalPopUp(){
+   var itemName = $(this).data("item");
+   var itemId=$(this).data("itemId");
+   $('#idVal').val(itemId);
+   $('.adName').html(itemName);
+   $("#deleteModal").modal();
+}
+    </script>

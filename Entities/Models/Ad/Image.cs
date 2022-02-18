@@ -13,6 +13,8 @@ namespace Entities.Models
 
         public string Name { get; set; }
 
+        public string Path { get; set; }
+
         public Guid AdId { get; set; }
         public virtual Ad Ad { get; set; }
     }

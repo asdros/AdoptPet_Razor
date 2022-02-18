@@ -21,12 +21,24 @@ function imagePreview() {
                 image_holder.show();
                 reader.readAsDataURL($(this)[0].files[i]);
             }
-        }
-        else {
+        } else {
             alert("this support does not support FileReader.");
         }
     });
 };
+
+function refreshAfterValidation() {
+    window.location.reload();
+}
+
+function validateImages() {
+    var inp = document.getElementById('imageUpload');
+    if (inp.files.length == 0) {
+        alert("Zdjęcia są obowiązkowe");
+        inp.focus();
+        return false;
+    }
+}
 
 function breedsDropDownList() {
     $("#breedId").prop("disabled", true);
@@ -36,12 +48,13 @@ function breedsDropDownList() {
             cache: false,
             type: "GET",
             url: '/Ads/GetBreeds',
+            contentType: 'application/json; charset=utf-8',
             data: { "animalIdVal": id },
             success: function (json, textStatus) {
                 $("#breedId").empty();
                 json = json || {};
                 for (var i = 0; i < json.length; i++) {
-                    $("#breedId").append('<option value="' + json[i].id + '">' + json[i].name + '</option>');
+                        $("#breedId").append('<option id="breedAd" value="' + json[i].id + '">' + json[i].name + '</option>');
                 }
                 $("#breedId").prop("disabled", false);
             },
@@ -60,6 +73,7 @@ function autocompletePlaceInput() {
             $.ajax({
                 url: '/Ads/AutoCompletePlaces',
                 dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
                 data: request,
                 success: function (data) {
                     response(data.map(function (value) {
@@ -103,30 +117,30 @@ modal.onclick = function () {
 
 }
 
-$(document).ready(function () {
-    var auto_array = {};
-    var label = '';
-    $('#placeName').autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: '/Ads/AutoCompletePlaces',
-                dataType: 'json',
-                data: request,
-                success: function (data) {
-                    response(data.map(function (value) {
-                        label = value.fullPlaceName;
-                        auto_array[label] = value.placeId;
-                        return label;
-                    }));
-                }
-            });
-        },
-        minLength: 3,
-        position: { my: "left center", at: "right top" },
+//$(document).ready(function () {
+//    var auto_array = {};
+//    var label = '';
+//    $('#placeName').autocomplete({
+//        source: function (request, response) {
+//            $.ajax({
+//                url: '/Ads/AutoCompletePlaces',
+//                dataType: 'json',
+//                data: request,
+//                success: function (data) {
+//                    response(data.map(function (value) {
+//                        label = value.fullPlaceName;
+//                        auto_array[label] = value.placeId;
+//                        return label;
+//                    }));
+//                }
+//            });
+//        },
+//        minLength: 3,
+//        position: { my: "left center", at: "right top" },
 
-        select: function (event, ui) {
-            console.log(auto_array);
-            $('#hiddenPlaceId').val(auto_array[ui.item.value]);
-        }
-    });
-});
+//        select: function (event, ui) {
+//            console.log(auto_array);
+//            $('#hiddenPlaceId').val(auto_array[ui.item.value]);
+//        }
+//    });
+//});

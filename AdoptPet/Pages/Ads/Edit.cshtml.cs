@@ -22,6 +22,9 @@ namespace AdoptPet.Pages.Ads
 
         [BindProperty]
         public Ad Ad { get; set; }
+        
+        [BindProperty]
+        public List<Image> Images { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {

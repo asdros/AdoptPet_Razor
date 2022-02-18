@@ -7,7 +7,7 @@ using System.IO;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Linq;
 
 namespace Services
 {
@@ -24,7 +24,17 @@ namespace Services
 
         public void DeleteImage(Image image)
         {
-            throw new NotImplementedException();
+            int index = image.Path.LastIndexOf("\\");
+            var galleryPath = image.Path.Substring(0,index);
+            if (File.Exists(image.Path))
+            {
+                File.Delete(image.Path);
+            }
+            
+            if(Directory.GetFiles(galleryPath).Length == 0)
+            {
+                Directory.Delete(galleryPath);
+            }
         }
 
         public async Task<ImageForCreationDTO> SaveImageToDisk(IFormFile formFile, Guid adId)
@@ -50,7 +60,7 @@ namespace Services
                 await formFile.CopyToAsync(stream);
             }
 
-            return new ImageForCreationDTO { Name = fileName, AdId = adId };
+            return new ImageForCreationDTO { Name = fileName, AdId = adId, Path=fullPathImage};
         }
     }
 }
