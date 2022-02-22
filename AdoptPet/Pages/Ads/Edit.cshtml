@@ -2,74 +2,99 @@
 @model AdoptPet.Pages.Ads.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+	ViewData["Title"] = "Edytuj ogłoszenie";
 }
 
-<h1>Edit</h1>
-
-<h4>Ad</h4>
+<h1>Edytuj ogłoszenie</h1>
+<a asp-page="./Index">Wróć do strony głównej</a>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Ad.Id" />
-            <div class="form-group">
-                <label asp-for="Ad.Title" class="control-label"></label>
-                <input asp-for="Ad.Title" class="form-control" />
-                <span asp-validation-for="Ad.Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Ad.NormalizedLink" class="control-label"></label>
-                <input asp-for="Ad.NormalizedLink" class="form-control" />
-                <span asp-validation-for="Ad.NormalizedLink" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Ad.Description" class="control-label"></label>
-                <input asp-for="Ad.Description" class="form-control" />
-                <span asp-validation-for="Ad.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Ad.Sterilization" /> @Html.DisplayNameFor(model => model.Ad.Sterilization)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Ad.Deworming" /> @Html.DisplayNameFor(model => model.Ad.Deworming)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Ad.AvailableFrom" class="control-label"></label>
-                <input asp-for="Ad.AvailableFrom" class="form-control" />
-                <span asp-validation-for="Ad.AvailableFrom" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Ad.LastModified" class="control-label"></label>
-                <input asp-for="Ad.LastModified" class="form-control" />
-                <span asp-validation-for="Ad.LastModified" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Ad.BreedId" class="control-label"></label>
-                <select asp-for="Ad.BreedId" class="form-control" asp-items="ViewBag.BreedId"></select>
-                <span asp-validation-for="Ad.BreedId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Ad.PlaceId" class="control-label"></label>
-                <select asp-for="Ad.PlaceId" class="form-control" asp-items="ViewBag.PlaceId"></select>
-                <span asp-validation-for="Ad.PlaceId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+  <div class="row justify-content-center">
+			@foreach (var image in Model.Images)
+			{
+	   <div class="col-md-4 offset-sm-2">
+		<img src="/images/@Model.AdFromDB.Id/@image.Name" class="edit-thumb-image" alt="@image.Name" />
+
+	<form method="post" asp-page-handler="DeleteImage">
+	     <button class="btn btn-danger btn-sm" id="imdDelBtn" >Usuń</button>
+		         <input type="hidden" name="id" value="@image.Id" />
+ </form>
+</div>
+			}
+  </div>
+  </div>
+  <div class="row">
+ <form method="post" enctype="multipart/form-data">
+  <div class="row">
+   <div class="col-md-6">
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<input type="hidden" asp-for="Ad.Id" />
+	<div class="form-group">
+	 <label asp-for="Ad.Title" class="control-label">Tytuł</label>
+	 <input asp-for="Ad.Title" class="form-control" />
+	 <span asp-validation-for="Ad.Title" class="text-danger"></span>
+	</div>
+   </div>
+  </div>
+  <div class="row">
+   <div class="col-md-8">
+	<div class="form-group">
+	 <label asp-for="Ad.Description" class="control-label">Opis</label>
+	 <textarea asp-for="Ad.Description" class="form-control" cols="100" rows="10"></textarea>
+	 <span asp-validation-for="Ad.Description" class="text-danger"></span>
+	</div>
+   </div>
+  </div>
+  <div class="col-md-4">
+   <div class="form-group form-check">
+	<label class="form-check-label">
+	 <input class="form-check-input" asp-for="Ad.Sterilization" />Sterylizacja
+	</label>
+   </div>
+   <div class="form-group form-check">
+	<label class="form-check-label">
+	 <input class="form-check-input" asp-for="Ad.Deworming" />Odrobaczenie
+	</label>
+   </div>
+   <div class="row">
+	<div class="col align-self-start">
+	 <div class="form-group">
+	  <label asp-for="Ad.BreedId" class="control-label">Rasa</label>
+	  <select asp-for="Ad.BreedId" class="form-control" asp-items="ViewBag.BreedId"></select>
+	  <span asp-validation-for="Ad.BreedId" class="text-danger"></span>
+	 </div>
+	 <div class="form-group">
+	  <label asp-for="Ad.PlaceId" class="control-label">Miejscowość</label>
+	  <input type="text" id="placeName" class="form-control"
+							   placeholder="@Model.PlaceToView.FullPlaceName">
+	  <span asp-validation-for="Ad.PlaceId" class="text-danger"></span>
+						@Html.TextBoxFor(Model => Model.Ad.PlaceId, new { id="hiddenPlaceId" ,style =
+						"visibility:hidden"})
+	 </div>
+	</div>
+   </div>
+  </div>
+          <div class="col-md-4">
+            <label class="control-label">Zdjęcia</label>
+            <input id="imageUpload" type="file" asp-for="ImagesFromForm" accept=".jpg, .jpeg, .png" multiple />
+            <br /><br />
+        </div>
+        <div class="row justify-content-center" id="image-holder">
+        </div>
+  <div class="form-group">
+   <input type="submit" value="Zapisz zmiany" class="btn btn-primary" />
+  </div>
+ </form>
 </div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
+<script>
+ $(document).ready(function () {
+  autocompletePlaceInput();
+  imagePreview();
+ });
+
+</script>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

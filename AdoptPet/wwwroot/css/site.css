@@ -240,3 +240,10 @@ span.carousel-control-prev-icon {
     padding: 5px;
     border-radius: 5%;
 }
+
+.edit-thumb-image {
+    width: 350px;
+    position: relative;
+    padding: 5px;
+    border-radius: 5%;
+}

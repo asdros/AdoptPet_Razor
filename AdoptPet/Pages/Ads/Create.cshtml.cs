@@ -39,6 +39,7 @@ namespace AdoptPet.Pages.Ads
 
         [BindProperty]
         public Ad Ad { get; set; }
+
         [BindProperty]
         public List<IFormFile> Images { get; set; }
 
@@ -63,7 +64,7 @@ namespace AdoptPet.Pages.Ads
 
             if(Images.Any(f => f.Length==0))
             {
-                _loggerManager.LogError("Images object sent from client is null.");
+                _loggerManager.LogError("Some image object sent from client (create ad form) is null.");
                 return RedirectToPage("./Index");
             }
 

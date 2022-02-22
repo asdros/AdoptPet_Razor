@@ -8,23 +8,39 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AdoptPet.Data;
 using Entities.Models;
+using AutoMapper;
+using Entities.DTO;
+using Contracts;
+using Microsoft.AspNetCore.Http;
 
 namespace AdoptPet.Pages.Ads
 {
     public class EditModel : PageModel
     {
-        private readonly AdoptPet.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
+        private readonly IImageService _imageService;
+        private readonly ILoggerManager _loggerManager;
 
-        public EditModel(AdoptPet.Data.ApplicationDbContext context)
+        public EditModel(ApplicationDbContext context, IMapper mapper, IImageService imageService, ILoggerManager loggerManager)
         {
             _context = context;
+            _mapper = mapper;
+            _imageService = imageService;
+            _loggerManager = loggerManager;
         }
 
         [BindProperty]
-        public Ad Ad { get; set; }
-        
+        public AdForUpdateDTO Ad { get; set; }
+
+        public Ad AdFromDB { get; set; }
+
         [BindProperty]
         public List<Image> Images { get; set; }
+
+        public PlaceDTO PlaceToView { get; set; }
+
+        public List<IFormFile> ImagesFromForm { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -33,21 +49,28 @@ namespace AdoptPet.Pages.Ads
                 return NotFound();
             }
 
-            Ad = await _context.Ad
+            AdFromDB = await _context.Ad
                 .Include(a => a.Breed)
                 .Include(a => a.Place).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (Ad == null)
+            Images = await _context.Image.Where(i => i.AdId.Equals(id) && i.isPoster.Equals(false))
+                                                    .OrderBy(i => i.isPoster)
+                                                    .ToListAsync();
+
+            if (AdFromDB == null)
             {
                 return NotFound();
             }
-           ViewData["BreedId"] = new SelectList(_context.Breed, "Id", "Name");
-           ViewData["PlaceId"] = new SelectList(_context.Place, "Id", "Id");
+
+            ViewData["BreedId"] = new SelectList(_context.Breed.Where(b => b.AnimalId.Equals(AdFromDB.Breed.AnimalId)), "Id", "Name");
+            //       ViewData["PlaceId"] = new SelectList(_context.Place, "Id", "Name");
+            PlaceToView = _mapper.Map<PlaceDTO>(AdFromDB.Place);
+
+            Ad = _mapper.Map<AdForUpdateDTO>(AdFromDB); // map to send only modifiable  fields 
+
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -55,23 +78,36 @@ namespace AdoptPet.Pages.Ads
                 return Page();
             }
 
-            _context.Attach(Ad).State = EntityState.Modified;
+            Ad.LastModified = DateTime.Now;
 
-            try
+            AdFromDB = await _context.Ad
+                .Include(a => a.Breed)
+                .Include(a => a.Images.Where(i => i.isPoster.Equals(false)))
+                .Include(a => a.Place).FirstOrDefaultAsync(m => m.Id == Ad.Id);
+
+            //_context.Attach(Ad).State = EntityState.Modified;
+            _context.Entry(AdFromDB).CurrentValues.SetValues(Ad);
+
+            await _context.SaveChangesAsync();
+
+            if(ImagesFromForm.Any(f => f.Length==0))
             {
-                await _context.SaveChangesAsync();
+                _loggerManager.LogError("Some image object sent from client (edit ad form) is null.");
+                return RedirectToPage("./Index");
             }
-            catch (DbUpdateConcurrencyException)
+
+            foreach(var image in ImagesFromForm)
             {
-                if (!AdExists(Ad.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                var imageDTO = await _imageService.SaveImageToDisk(image, AdFromDB.Id);
+                
+                imageDTO.isPoster = false;      // poster cannot be updated
+
+                var imageEntity = _mapper.Map<Image>(imageDTO);
+
+                _context.Image.Add(imageEntity);
             }
+
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }
@@ -79,6 +115,21 @@ namespace AdoptPet.Pages.Ads
         private bool AdExists(Guid id)
         {
             return _context.Ad.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> OnPostDeleteImageAsync(Guid id)
+        {
+            var imageFromDb = await _context.Image.Where(i => i.Id.Equals(id)).SingleOrDefaultAsync();
+            
+            if(imageFromDb != null)
+            {
+                _imageService.DeleteImage(imageFromDb);
+                _context.Image.Remove(imageFromDb);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Edit", new { id = imageFromDb.AdId });
         }
     }
 }

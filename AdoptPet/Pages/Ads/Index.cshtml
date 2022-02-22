@@ -23,6 +23,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Ad[0].Place)
             </th>  
+            <th>
+                Operacje
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -77,7 +80,7 @@
     </tbody>
     </table>
 
-    <div class="container d-flex">
+    <div class="container ">
         <div class="row justify-content-center">
             @foreach(var item in Model.Ad)
     {

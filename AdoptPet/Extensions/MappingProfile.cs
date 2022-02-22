@@ -16,6 +16,7 @@ namespace AdoptPet.Extensions
                         .Join(", ", s.Name, s.District.Name, s.District.Province.Name)));
 
             CreateMap<ImageForCreationDTO, Image>();
+            CreateMap<AdForUpdateDTO, Ad>().ReverseMap(); 
         }
     }
 }

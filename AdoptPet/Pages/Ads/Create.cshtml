@@ -1,94 +1,93 @@
 ﻿@page
 @model AdoptPet.Pages.Ads.CreateModel
+
 @{
-	ViewData["Title"] = "Dodaj nowe ogłoszenie";
+ViewData["Title"] = "Dodaj nowe ogłoszenie";
 }
+
 <h4>Dodaj nowe ogłoszenie</h4>
 <a asp-page="Index">Wróć do strony głównej</a>
 <hr />
 <div class="row">
- <form method="post" enctype="multipart/form-data"  onsubmit="return(validateImages());">
- <div class="row">
-  <div class="col-md-4">
-   <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-   <div class="form-group">
-	<label asp-for="Ad.Title" class="control-label">Tytuł</label>
-	<input asp-for="Ad.Title" class="form-control" />
-	<span asp-validation-for="Ad.Title" class="text-danger"></span>
-   </div>
-  </div>
-  </div>
-  <div class="row">
-   <div class="col-md-8">
-	<div class="form-group">
-	 <label asp-for="Ad.Description" class="control-label">Opis</label>
-	 <textarea asp-for="Ad.Description" class="form-control" cols="100" rows="10"></textarea>
-	 <span asp-validation-for="Ad.Description" class="text-danger"></span>
-	</div>
-   </div>
-  </div>
-  <div class="col-md-4">
-   <div class="form-group form-check">
-	<label class="form-check-label">
-	 <input class="form-check-input" asp-for="Ad.Sterilization" /> Sterylizacja
-	</label>
-   </div>
-   <div class="form-group form-check">
-	<label class="form-check-label">
-	 <input class="form-check-input" asp-for="Ad.Deworming" />Odrobaczenie
-	</label>
-   </div>
-   <div class="row">
-	<div class="col align-self-start">
-	 <div class="form-group">
-	  <label asp-for="Ad.Breed.Animal.Id" class="control-label">Gatunek</label>
-	  <select id="animalId" class="form-control" asp-items="(IEnumerable<SelectListItem>)@ViewData["AnimalId"]">
-	   <option value="">-- Wybierz gatunek --</option>
-	  </select>
-	 </div>
-	 <div class="form-group">
-	  <label asp-for="Ad.BreedId" class="control-label" for="breedAd">Rasa</label>
-	  <select asp-for="Ad.BreedId" class="form-control" id="breedId">
-	  </select>
-	  <span asp-validation-for="Ad.BreedId" class="text-danger"></span>
-		@Html.ValidationMessageFor(Model => Model.Ad.BreedId)
-	 </div>
-	</div>
-   </div>
-   <div class="form-group">
-	<label asp-for="Ad.PlaceId" class="control-label">Miejscowość</label>
-	<input type="text" id="placeName" class="form-control" placeholder="Wpisz nazwę miejscowości">
-	<span asp-validation-for="Ad.PlaceId" class="text-danger"></span>
-@*	<input type="text" style="display:none" class="hiddenInput" id="hiddenPlaceId" asp-for="Ad.PlaceId" />*@
-	@Html.TextBoxFor(Model => Model.Ad.PlaceId, new { id="hiddenPlaceId" ,style = "visibility:hidden"})
-   </div>
-   </div>
-   <div class="row justify-content-center" id="image-holder">
-	
-	   
-   </div>
-   <div class="col-md-4">
-	<label class="control-label">Zdjęcia</label>
-	<input id="imageUpload" type="file" asp-for="Images" accept=".jpg, .jpeg, .png" multiple />
-	<br /><br />
-   </div>
-   <div class="form-group">
-	<input type="submit" value="Dodaj ogłoszenie" class="btn btn-primary" />
-   </div>
- 
- </form>
+    <form method="post" enctype="multipart/form-data" onsubmit="return(validateImages());">
+        <div class="row">
+            <div class="col-md-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Ad.Title" class="control-label">Tytuł</label>
+                    <input asp-for="Ad.Title" class="form-control" />
+                    <span asp-validation-for="Ad.Title" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label asp-for="Ad.Description" class="control-label">Opis</label>
+                    <textarea asp-for="Ad.Description" class="form-control" cols="100" rows="10"></textarea>
+                    <span asp-validation-for="Ad.Description" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Ad.Sterilization" /> Sterylizacja
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Ad.Deworming" />Odrobaczenie
+                </label>
+            </div>
+            <div class="row">
+                <div class="col align-self-start">
+                    <div class="form-group">
+                        <label asp-for="Ad.Breed.Animal.Id" class="control-label">Gatunek</label>
+                        <select id="animalId" class="form-control" asp-items="(IEnumerable<SelectListItem>)@ViewData["AnimalId"]">
+                            <option value="">-- Wybierz gatunek --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Ad.BreedId" class="control-label" for="breedAd">Rasa</label>
+                        <select asp-for="Ad.BreedId" class="form-control" id="breedId">
+                        </select>
+                        <span asp-validation-for="Ad.BreedId" class="text-danger"></span>
+                        @Html.ValidationMessageFor(Model => Model.Ad.BreedId)
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ad.PlaceId" class="control-label">Miejscowość</label>
+                <input type="text" id="placeName" class="form-control" placeholder="Wpisz nazwę miejscowości">
+                <span asp-validation-for="Ad.PlaceId" class="text-danger"></span>
+                @Html.TextBoxFor(Model => Model.Ad.PlaceId, new { id="hiddenPlaceId" ,style = "visibility:hidden"})
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label class="control-label">Zdjęcia</label>
+            <input id="imageUpload" type="file" asp-for="Images" accept=".jpg, .jpeg, .png" multiple />
+            <br /><br />
+        </div>
+        <div class="row justify-content-center" id="image-holder">
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Dodaj ogłoszenie" class="btn btn-primary" />
+        </div>
+    </form>
 </div>
 <script>
- $(document).ready(function(){
-	imagePreview();
-	breedsDropDownList();
-	autocompletePlaceInput();
-	$('#breedId1').click(function(){
-		refreshAfterValidation();
-	});
- });
- 	validateImages();
+    $(document).ready(function () {
+        imagePreview();
+        breedsDropDownList();
+        autocompletePlaceInput();
+        $('#breedId1').click(function () {
+            refreshAfterValidation();
+        });
+    });
+    validateImages();
 </script>
+
 @section Scripts {
 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
