@@ -12,6 +12,11 @@ for details on configuring this project to bundle and minify static web assets. 
     margin-top: 10px;
 }
 
+.modal-body {
+    text-align: center;
+    height: auto;
+}
+
 div.posterImage {
     height: auto;
     margin: 0 auto;
@@ -19,21 +24,6 @@ div.posterImage {
     position: relative;
     background-color: #FFFD88;
 }
-
-#myImg {
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 100%;
-    max-height: 100%;
-}
-
-    #myImg:hover {
-        opacity: 0.7;
-    }
 
 .myImg {
     width: 640px;
@@ -136,38 +126,6 @@ body {
     line-height: 60px; /* Vertically center the text there */
 }
 
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 99; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-}
-
-.modal-content {
-    margin: auto;
-    display: block;
-    width: 75%;
-    //max-width: 75%;
-}
-
-#caption {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 700px;
-    text-align: center;
-    color: #ccc;
-    padding: 10px 0;
-    height: 150px;
-}
-
 @-webkit-keyframes zoom {
     from {
         -webkit-transform: scale(1)
@@ -224,7 +182,7 @@ body {
     .modal-content {
         width: 100%;
     }
-}
+}*/
 
 span.carousel-control-next-icon {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff0000' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5L3.75 4l-2.5 2.5L2.75 8l4-4-4-4z'/%3e%3c/svg%3e");

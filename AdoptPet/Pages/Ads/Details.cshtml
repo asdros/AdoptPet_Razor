@@ -35,15 +35,17 @@
   </dd>
   <dd class="col-sm-6" style="padding-bottom:30px">
    <div class="carousel slide" id="gallery" data-interval="5000" data-touch="true" data-ride="carousel">
-	   <div class="carousel-inner">
-				@foreach(var image in Model.Images)
-				{
-				<div class="carousel-item @if(Model.Images.First()==image) {<text>active</text>}">
-					<img class="d-block w-100" src="/images/@Model.Ad.Id/@image.Name" id="myImg" alt="@image.Name" />
-				</div>
-				}
-				</div>
-				<a class="carousel-control-prev" href="#gallery" role="button" data-slide="prev">
+	<div class="carousel-inner">
+					@foreach (var image in Model.Images)
+					{
+		 <div class="carousel-item @if(Model.Images.First()==image) {<text>active</text>}">
+		  <a class="pop">
+		   <img class="d-block w-100" src="/images/@Model.Ad.Id/@image.Name" id="myImg" alt="@image.Name" />
+		  </a>
+		 </div>
+					}
+	</div>
+	<a class="carousel-control-prev" href="#gallery" role="button" data-slide="prev">
 	 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
 	 <span class="sr-only">Previous</span>
 	</a>
@@ -91,8 +93,22 @@
  </div>
 </div>
 
-
-<div id="myModal" class="modal">
- <img class="modal-content" id="img01">
- <div id="caption"></div>
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">              
+      <div class="modal-body">
+      	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <img src="" class="imagepreview" style="width: 100%;" >
+      </div>
+    </div>
+  </div>
 </div>
+
+<script>
+	$(function() {
+		$('.pop').on('click', function() {
+			$('.imagepreview').attr('src', $(this).find('img').attr('src'));
+			$('#imagemodal').modal('show');   
+		});		
+});
+</script>
