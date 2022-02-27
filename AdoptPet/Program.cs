@@ -1,6 +1,7 @@
 using AdoptPet.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -22,9 +23,13 @@ namespace AdoptPet
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     context.Database.Migrate();
-                    SeedData.Initialize(services, "not used");
+
+                    var config = host.Services.GetRequiredService<IConfiguration>();
+                    var testUserPw = config["SeedUserPW"];
+
+                    SeedData.Initialize(services, testUserPw).Wait();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occurred seeding the DB");

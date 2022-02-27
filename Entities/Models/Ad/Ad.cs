@@ -60,9 +60,9 @@ namespace Entities.Models
 
         public DateTime? LastModified { get; set; }
 
-        //       public AdStatus Status { get; set; }
+        public AdStatus Status { get; set; }
 
-        //       public string OwnerId { get; set; }
+        public string OwnerId { get; set; }
 
         [Required(ErrorMessage = "Wiek zwierzęcia jest wymagany")]
         [Range(0, 360, ErrorMessage = "Maksymalny wiek zwierzęcia to 30 lat")]

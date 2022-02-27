@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AdoptPet.Extensions;
+using Microsoft.AspNetCore.Authorization;
+using AdoptPet.Areas.Authorization;
 
 namespace AdoptPet
 {
@@ -28,9 +30,13 @@ namespace AdoptPet
             services.AddAutoMapper(typeof(Startup));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.ConfigureDefaultIdentity();
             services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.ConfigureAuthorization();
+
+            services.AddScoped<IAuthorizationHandler, OwnerAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, AdministratorAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, ManagerAuthorizationHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -4,6 +4,9 @@ using Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace AdoptPet.Extensions
 {
@@ -22,5 +25,19 @@ namespace AdoptPet.Extensions
 
         public static void ConfigureImageSaveService(this IServiceCollection services) =>
             services.AddScoped<IImageService, ImageService>();
+
+        public static void ConfigureDefaultIdentity(this IServiceCollection services) =>
+            services.AddDefaultIdentity<IdentityUser>()
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+        public static void ConfigureAuthorization(this IServiceCollection services) =>
+            services.AddControllers(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                                    .RequireAuthenticatedUser()
+                                    .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
     }
 }
