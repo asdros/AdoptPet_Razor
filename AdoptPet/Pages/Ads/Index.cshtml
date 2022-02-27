@@ -52,8 +52,8 @@
                     Usuń
                 </button>
 
-                <div class="modal fade" id="@mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
-                    <div class="modal-dialog">
+                <div class="modal fade" id="@mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="true">
+                    <div class="modal-dialog modal-sm">
                         <div class="modal-content">
                             <div class="modal-header">
                                     <h5 class="modal-title">Usuwanie ogłoszenia</h5>
@@ -86,9 +86,11 @@
     {
         <div class="col-md-4 text-center" id="gridAd">
             <div class="posterImage">
+                <div class="row justify-content-center">
                               <a asp-page="./Details" asp-route-link="@item.NormalizedLink">
                 <img src="/images/@item.Id/@item.Images.SingleOrDefault().Name" id="myImg" alt="@item.Images.SingleOrDefault().Name"/>
                 </a>
+                </div>
                 <span style="text-align:center">@item.Title <br />@item.Breed.Animal.Species, @item.Breed.Name<br /></span>
                 <span style="text-align:left;font-size:10px">@item.AvailableFrom.ToString("dddd, dd MMMM yyyy")<br /></span>
                 <span style="text-align:right; font-size:10px">@item.Place.Name, @item.Place.District.Name</span>
@@ -98,45 +100,3 @@
     </div>
     </div>
 
-
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true" data-backdrop="false">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Usuwanie ogłoszenia</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Czy na pewno usunąć ogłoszenie?
-                    <div class="adName">
-                        
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-                        <form method="post">
-                            <input type="hidden" asp-for="AdToDelete.Id" />
-                            <input type="submit" value="Delete" class="btn btn-danger" /> |
-                        </form>
-                    <button type="button" class="btn btn-danger">Usuń</button>             
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <script>
-        $(document).ready(function(){
-    $(document).on("click",".deleteModal",OpenModalPopUp);   
-});
-
-function OpenModalPopUp(){
-   var itemName = $(this).data("item");
-   var itemId=$(this).data("itemId");
-   $('#idVal').val(itemId);
-   $('.adName').html(itemName);
-   $("#deleteModal").modal();
-}
-    </script>

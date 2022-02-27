@@ -57,6 +57,19 @@ ViewData["Title"] = "Dodaj nowe ogłoszenie";
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col align-self-start">
+                    <div class="form-group">
+                        <label asp-for="Ad.AgeAnimal" class="control-label">Wiek zwierzęcia</label>
+                    <input asp-for="Ad.AgeAnimal" class="form-control" min="0" step="1" placeholder="Wyrażony w miesiącach" />
+                    <span asp-validation-for="Ad.AgeAnimal" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Ad.GenderAnimal" class="control-label">Płeć zwierzęcia</label>
+                        @Html.DropDownListFor(Model=>Model.Ad.GenderAnimal, new SelectList(Enum.GetValues(typeof(Gender))), new{@class="form-control"})
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <label asp-for="Ad.PlaceId" class="control-label">Miejscowość</label>
                 <input type="text" id="placeName" class="form-control" placeholder="Wpisz nazwę miejscowości">

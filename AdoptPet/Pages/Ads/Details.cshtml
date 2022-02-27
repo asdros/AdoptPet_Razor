@@ -40,7 +40,7 @@
 					{
 		 <div class="carousel-item @if(Model.Images.First()==image) {<text>active</text>}">
 		  <a class="pop">
-		   <img class="d-block w-100" src="/images/@Model.Ad.Id/@image.Name" id="myImg" alt="@image.Name" />
+		   <img style="" class="d-block w-100" src="/images/@Model.Ad.Id/@image.Name" id="myImg" alt="@image.Name" />
 		  </a>
 		 </div>
 					}
@@ -78,6 +78,25 @@
 			@Html.DisplayFor(model => model.Ad.Breed.Animal.Species),
 			@Html.DisplayFor(model => model.Ad.Breed.Name)
   </dd>
+  <dt class="col-sm-3">
+	  Wiek w latach
+  </dt>
+  <dd class="col-sm-3">
+	  @if(@Model.Ad.AgeAnimal < 12)
+			{
+				<span>Mniej niż rok</span>
+			}
+			else
+			{	var monthsToYears =Model.Ad.AgeAnimal / 12;
+				@Html.DisplayFor(model=>monthsToYears)
+			}
+  </dd>
+  <dt class="col-sm-3">
+	  Płeć
+  </dt>
+  <dd class="col-sm-3">
+	  @Html.DisplayFor(model=>model.Ad.GenderAnimal)
+  </dd>
   <dt class="col-sm-2">
    Lokalizacja
   </dt>
@@ -105,7 +124,7 @@
 </div>
 
 <script>
-	$(function() {
+$(function() {
 		$('.pop').on('click', function() {
 			$('.imagepreview').attr('src', $(this).find('img').attr('src'));
 			$('#imagemodal').modal('show');   

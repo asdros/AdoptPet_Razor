@@ -9,20 +9,20 @@
 <a asp-page="./Index">Wróć do strony głównej</a>
 <hr />
 <div class="row">
-  <div class="row justify-content-center">
-			@foreach (var image in Model.Images)
-			{
-	   <div class="col-md-4 offset-sm-2">
-		<img src="/images/@Model.AdFromDB.Id/@image.Name" class="edit-thumb-image" alt="@image.Name" />
+ <div class="row justify-content-center">
+		@foreach (var image in Model.Images)
+		{
+	  <div class="col-md-4 offset-sm-2">
+	   <img src="/images/@Model.AdFromDB.Id/@image.Name" class="edit-thumb-image" alt="@image.Name" />
 
-	<form method="post" asp-page-handler="DeleteImage">
-	     <button class="btn btn-danger btn-sm" id="imdDelBtn" >Usuń</button>
-		         <input type="hidden" name="id" value="@image.Id" />
- </form>
+	   <form method="post" asp-page-handler="DeleteImage">
+		<button class="btn btn-danger btn-sm" id="imdDelBtn">Usuń</button>
+		<input type="hidden" name="id" value="@image.Id" />
+	   </form>
+	  </div>
+		}
+ </div>
 </div>
-			}
-  </div>
-  </div>
   <div class="row">
  <form method="post" enctype="multipart/form-data">
   <div class="row">
@@ -55,6 +55,19 @@
 	<label class="form-check-label">
 	 <input class="form-check-input" asp-for="Ad.Deworming" />Odrobaczenie
 	</label>
+   </div>
+   <div class="row">
+	   <div class="col align-self-start">
+		<div class="form-group">
+			<label asp-for="Ad.AgeAnimal" class="control-label">Wiek zwierzęcia wyrażony w miesiącach</label>
+			<input asp-for="Ad.AgeAnimal" class="form-control" min="0" step="1" placeholder="@Model.Ad.AgeAnimal" />
+			<span asp-validation-for="Ad.AgeAnimal" class="text-danger"></span>
+		</div>
+		<div class="form-group">
+			<label asp-for="Ad.GenderAnimal" class="control-label">Płeć zwierzęcia</label>
+			@Html.DropDownListFor(Model=>Model.Ad.GenderAnimal, new SelectList(Enum.GetValues(typeof(Gender))), new{@class="form-control"})
+		</div>
+	</div>
    </div>
    <div class="row">
 	<div class="col align-self-start">

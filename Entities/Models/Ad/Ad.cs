@@ -24,7 +24,7 @@ namespace Entities.Models
             get { return _normalizedLink; }
             set
             {
-                if (NormalizedLink == null || NormalizedLink =="")
+                if (NormalizedLink == null || NormalizedLink == "")
                 {
                     value = GenerateLink(Title);
                 }
@@ -44,7 +44,7 @@ namespace Entities.Models
 
         //validation to set a datatime during creating new entity to database
         private DateTime _availableFrom;
-        
+
         public DateTime AvailableFrom
         {
             get { return _availableFrom; }
@@ -60,9 +60,16 @@ namespace Entities.Models
 
         public DateTime? LastModified { get; set; }
 
- //       public AdStatus Status { get; set; }
+        //       public AdStatus Status { get; set; }
 
- //       public string OwnerId { get; set; }
+        //       public string OwnerId { get; set; }
+
+        [Required(ErrorMessage = "Wiek zwierzęcia jest wymagany")]
+        [Range(0, 360, ErrorMessage = "Maksymalny wiek zwierzęcia to 30 lat")]
+        public byte AgeAnimal { get; set; }
+
+        [Required(ErrorMessage = "Płeć zwierzęcia jest wymagana")]
+        public Gender GenderAnimal { get; set; }
 
         [Required(ErrorMessage = "Rasa zwierzęcia jest wymagana.")]
         [ForeignKey(nameof(Breed))]
@@ -105,5 +112,11 @@ namespace Entities.Models
         Odrzucone,
         Zatwierdzone,
         Oczekujące
+    }
+
+    public enum Gender
+    {
+        Samiec,
+        Samica
     }
 }
