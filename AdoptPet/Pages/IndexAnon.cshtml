@@ -1,0 +1,30 @@
+﻿@page
+@model IndexAnonModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Witaj</h1>
+</div>
+
+
+    <div class="container ">
+        <div class="row justify-content-center">
+            @foreach(var item in Model.ApprovedAds)
+    {
+        <div class="col-md-4 text-center" id="gridAd">
+            <div class="posterImage">
+                <div class="row justify-content-center">
+                              <a asp-page="./Ads/Details" asp-route-link="@item.NormalizedLink">
+                <img src="/images/@item.Id/@item.Images.SingleOrDefault().Name" id="myImg" alt="@item.Images.SingleOrDefault().Name"/>
+                </a>
+                </div>
+                <span style="text-align:center">@item.Title <br />@item.Breed.Animal.Species, @item.Breed.Name<br /></span>
+                <span style="text-align:left;font-size:10px">@item.AvailableFrom.ToString("dddd, dd MMMM yyyy")<br /></span>
+                <span style="text-align:right; font-size:10px">@item.Place.Name, @item.Place.District.Name</span>
+            </div>
+    </div>
+    }
+    </div>
+    </div>

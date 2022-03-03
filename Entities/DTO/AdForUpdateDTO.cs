@@ -15,6 +15,8 @@ namespace Entities.DTO
         public Gender GenderAnimal { get; set; }
         public int BreedId { get; set; }
         public int PlaceId { get; set; }
+        public string OwnerId { get; set; }
+        public AdStatus Status { get; set; }
     }
 }
 

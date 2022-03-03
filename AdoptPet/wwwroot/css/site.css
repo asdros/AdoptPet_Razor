@@ -23,6 +23,10 @@ div.posterImage {
     padding: 10px;
     position: relative;
     background-color: #FFFD88;
+    border-radius: 10px;
+    border-width: 1px;
+    border-color: rgb(217, 169, 169);
+    border-style: solid;
 }
 
 .myImg {
@@ -31,7 +35,7 @@ div.posterImage {
 }
 
 #myImg {
-    max-width: 100%;
+    max-width: 90%;
     max-height: 360px;
 }
 
@@ -99,11 +103,11 @@ html {
 }
 
 .border-bottom {
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #0267cd;
 }
 
 .box-shadow {
-    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(79, 205, 27, .05);
 }
 
 button.accept-policy {
@@ -121,6 +125,7 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
+    background-color: #e6fbff;
 }
 
 .footer {

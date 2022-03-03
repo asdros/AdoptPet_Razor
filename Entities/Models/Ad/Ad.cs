@@ -109,9 +109,9 @@ namespace Entities.Models
 
     public enum AdStatus
     {
-        Odrzucone,
+        Oczekujące,
         Zatwierdzone,
-        Oczekujące
+        Odrzucone
     }
 
     public enum Gender

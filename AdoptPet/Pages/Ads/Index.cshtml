@@ -24,6 +24,9 @@
                 @Html.DisplayNameFor(model => model.Ad[0].Place)
             </th>  
             <th>
+                @Html.DisplayNameFor(model=>model.Ad[0].Status)
+            </th>
+            <th>
                 Operacje
             </th>
         </tr>
@@ -31,7 +34,7 @@
     <tbody>
 @foreach (var item in Model.Ad) {
     var tm = "#myModal" + item.Id;
-        var mid = "myModal" + item.Id;    
+    var mid = "myModal" + item.Id;    
     <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -46,11 +49,22 @@
                 @Html.DisplayFor(modelItem => item.Place.Name)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Edytuj</a> |
-                <a asp-page="./Details" asp-route-link="@item.NormalizedLink" class="btn btn-info btn-sm">Szczegóły</a> |
-                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="@tm">
-                    Usuń
-                </button>
+                @Html.DisplayFor(modelItem=>item.Status)
+            </td>
+            <td>
+                @if((await AuthorizationService.AuthorizeAsync(User,item,UserOperations.Update)).Succeeded)
+                {
+                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm">Edytuj</a>
+                    <text> | </text>
+                }
+                <a asp-page="./Details" asp-route-link="@item.NormalizedLink" class="btn btn-info btn-sm">Szczegóły</a>
+                
+                @if((await AuthorizationService.AuthorizeAsync(User,item, UserOperations.Delete)).Succeeded)
+                {
+                    <text> | </text>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="@tm">Usuń</button>  
+                }
+
 
                 <div class="modal fade" id="@mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="true">
                     <div class="modal-dialog modal-sm">
@@ -82,7 +96,7 @@
 
     <div class="container ">
         <div class="row justify-content-center">
-            @foreach(var item in Model.Ad)
+            @foreach(var item in Model.ApprovedAds)
     {
         <div class="col-md-4 text-center" id="gridAd">
             <div class="posterImage">

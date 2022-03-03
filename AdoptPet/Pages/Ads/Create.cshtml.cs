@@ -10,17 +10,21 @@ using Microsoft.AspNetCore.Http;
 using Contracts;
 using Entities.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using AdoptPet.Areas.Authorization;
 
 namespace AdoptPet.Pages.Ads
 {
-    public class CreateModel : PageModel
+    public class CreateModel : DI_BasePageModel
     {
         private readonly ApplicationDbContext _context;
         private readonly ILoggerManager _loggerManager;
         private readonly IImageService _imageService;
         private readonly IMapper _mapper;
 
-        public CreateModel(ApplicationDbContext context, ILoggerManager loggerManager, IImageService imageService, IMapper mapper)
+        public CreateModel(ApplicationDbContext context, IAuthorizationService authorizationService, UserManager<IdentityUser> userManager, ILoggerManager loggerManager, IImageService imageService, IMapper mapper)
+            : base(context, authorizationService, userManager)
         {
             _context = context;
             _loggerManager = loggerManager;
@@ -54,6 +58,15 @@ namespace AdoptPet.Pages.Ads
                 return Page();
             }
 
+            Ad.OwnerId = UserManager.GetUserId(User);
+
+            var isAuthorized = await AuthorizationService.AuthorizeAsync(User, Ad, UserOperations.Create);
+
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
             Ad.AvailableFrom = DateTime.Now;
             Ad.NormalizedLink = Ad.GenerateLink(Ad.Title);
 
@@ -62,13 +75,13 @@ namespace AdoptPet.Pages.Ads
 
             await _context.SaveChangesAsync();
 
-            if(Images.Any(f => f.Length==0))
+            if (Images.Any(f => f.Length == 0))
             {
                 _loggerManager.LogError("Some image object sent from client (create ad form) is null.");
                 return RedirectToPage("./Index");
             }
 
-            foreach(var image in Images)
+            foreach (var image in Images)
             {
                 var imageDTO = await _imageService.SaveImageToDisk(image, Ad.Id);
 

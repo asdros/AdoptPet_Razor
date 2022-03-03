@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using AdoptPet.Areas.Authorization;
+using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

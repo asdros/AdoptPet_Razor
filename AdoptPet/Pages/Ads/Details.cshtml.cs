@@ -6,14 +6,20 @@ using AdoptPet.Data;
 using Entities.Models;
 using System.Collections.Generic;
 using System.Linq;
+using AdoptPet.Areas.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace AdoptPet.Pages.Ads
 {
-    public class DetailsModel : PageModel
+    [AllowAnonymous]
+    public class DetailsModel : DI_BasePageModel
     {
         private readonly ApplicationDbContext _context;
 
-        public DetailsModel(ApplicationDbContext context)
+        public DetailsModel(ApplicationDbContext context, IAuthorizationService authorizationService, UserManager<IdentityUser> userManager)
+            :base(context,authorizationService,userManager)
         {
             _context = context;
         }
@@ -46,7 +52,42 @@ namespace AdoptPet.Pages.Ads
             {
                 return NotFound();
             }
+
+            var isAuthorized = User.IsInRole(Constants.ManagersRole) || User.IsInRole(Constants.AdministratorsRole);
+
+            var currentUserId = UserManager.GetUserId(User);
+
+            if(!isAuthorized && currentUserId!=Ad.OwnerId && Ad.Status!=AdStatus.Zatwierdzone)
+            {
+                return Forbid();
+            }
+
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync(Guid id, AdStatus status)
+        {
+            var ad = await _context.Ad.FirstOrDefaultAsync(a => a.Id == id);
+
+            if(ad==null)
+            {
+                return NotFound();
+            }
+
+            var adOperation = (status == AdStatus.Zatwierdzone) ? UserOperations.Approve : UserOperations.Reject;
+
+            var isAuthorized = await AuthorizationService.AuthorizeAsync(User, ad, adOperation);
+            
+            if(!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
+            ad.Status = status;
+            _context.Ad.Update(ad);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index");
         }
     }
 }

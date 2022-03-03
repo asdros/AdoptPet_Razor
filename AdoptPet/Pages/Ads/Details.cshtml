@@ -9,7 +9,7 @@
 
 <div>
  <dl class="row">
-  <dd class="col-sm-8">
+  <dd class="col-sm-6">
    <h4>@Html.DisplayFor(model => model.Ad.Title)</h4>
   </dd>
   <dd class="col-sm-2">
@@ -17,12 +17,43 @@
 				@Html.DisplayFor(model => model.Ad.AvailableFrom)
    </label>
   </dd>
+  <dd class="col-sm-1">
+			@Html.DisplayFor(model=>model.Ad.Status)
+  </dd>
+  <dd class="col-sm-1">
+			@if (Model.Ad.Status != AdStatus.Zatwierdzone)
+			{
+				@if ((await AuthorizationService.AuthorizeAsync(User, Model.Ad, UserOperations.Approve)).Succeeded)
+				{
+		   <form style="display:inline" method="post">
+			<input type="hidden" name="id" value="@Model.Ad.Id" />
+			<input type="hidden" name="status" value="@AdStatus.Zatwierdzone" />
+			<button type="submit" class="btn btn-sm btn-success">Zatwierdź</button>
+		   </form>
+				}
+			}
+
+			@if (Model.Ad.Status != AdStatus.Odrzucone)
+			{
+				@if ((await AuthorizationService.AuthorizeAsync(User, Model.Ad, UserOperations.Reject)).Succeeded)
+				{
+		   <form style="display:inline" method="post">
+			<input type="hidden" name="id" value="@Model.Ad.Id" />
+			<input type="hidden" name="status" value="@AdStatus.Odrzucone" />
+			<button type="submit" class="btn btn-sm btn-danger">Odrzuć</button>
+		   </form>
+				}
+			}
+  </dd>
   <dd class="col-sm-2">
-   <a asp-page="./Edit" asp-route-id="@Model.Ad.Id" title="Dodaj do ogłoszeń obserwowanych">
-	<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bag-heart" viewBox="0 0 16 16">
-	 <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5Zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0ZM14 14V5H2v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1ZM8 7.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"></path>
-	</svg>
-   </a>
+			@if (User.Identity.IsAuthenticated)
+			{
+				<a asp-page="./Edit" asp-route-id="@Model.Ad.Id" title="Dodaj do ogłoszeń obserwowanych">
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bag-heart" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5Zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0ZM14 14V5H2v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1ZM8 7.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"></path>
+					</svg>
+				</a>
+			}
   </dd>
  </dl>
  <hr />
@@ -79,23 +110,24 @@
 			@Html.DisplayFor(model => model.Ad.Breed.Name)
   </dd>
   <dt class="col-sm-3">
-	  Wiek w latach
+   Wiek w latach
   </dt>
   <dd class="col-sm-3">
-	  @if(@Model.Ad.AgeAnimal < 12)
+			@if (@Model.Ad.AgeAnimal < 12)
 			{
-				<span>Mniej niż rok</span>
+	   <span>Mniej niż rok</span>
 			}
 			else
-			{	var monthsToYears =Model.Ad.AgeAnimal / 12;
+			{
+				var monthsToYears = Model.Ad.AgeAnimal / 12;
 				@Html.DisplayFor(model=>monthsToYears)
 			}
   </dd>
   <dt class="col-sm-3">
-	  Płeć
+   Płeć
   </dt>
   <dd class="col-sm-3">
-	  @Html.DisplayFor(model=>model.Ad.GenderAnimal)
+			@Html.DisplayFor(model=>model.Ad.GenderAnimal)
   </dd>
   <dt class="col-sm-2">
    Lokalizacja
@@ -107,27 +139,31 @@
   </dd>
  </dl>
  <div>
-  <a asp-page="./Edit" asp-route-id="@Model.Ad.Id">Edytuj</a> |
+		@if ((await AuthorizationService.AuthorizeAsync(User, Model.Ad, UserOperations.Update)).Succeeded)
+		{
+	  <a asp-page="./Edit" asp-route-id="@Model.Ad.Id">Edytuj</a>
+			<text> | </text>
+		}
   <a asp-page="./Index">Wróć do strony głównej</a>
  </div>
 </div>
 
 <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">              
-      <div class="modal-body">
-      	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <img src="" class="imagepreview" style="width: 100%;" >
-      </div>
-    </div>
+ <div class="modal-dialog modal-lg">
+  <div class="modal-content">
+   <div class="modal-body">
+	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	<img src="" class="imagepreview" style="width: 100%;">
+   </div>
   </div>
+ </div>
 </div>
 
 <script>
-$(function() {
-		$('.pop').on('click', function() {
-			$('.imagepreview').attr('src', $(this).find('img').attr('src'));
-			$('#imagemodal').modal('show');   
-		});		
-});
+ $(function() {
+   $('.pop').on('click', function() {
+	$('.imagepreview').attr('src', $(this).find('img').attr('src'));
+	$('#imagemodal').modal('show');
+   });
+ });
 </script>
