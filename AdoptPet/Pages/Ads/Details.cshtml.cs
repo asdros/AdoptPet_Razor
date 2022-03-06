@@ -28,6 +28,8 @@ namespace AdoptPet.Pages.Ads
 
         public IEnumerable<Image> Images { get; set; }
 
+        public IdentityUser Owner { get; set; }
+
         public async Task<IActionResult> OnGetAsync(string link)
         {
             if (link == null)
@@ -52,6 +54,8 @@ namespace AdoptPet.Pages.Ads
             {
                 return NotFound();
             }
+
+            Owner = await _context.Users.Where(u => u.Id == Ad.OwnerId).FirstOrDefaultAsync();
 
             var isAuthorized = User.IsInRole(Constants.ManagersRole) || User.IsInRole(Constants.AdministratorsRole);
 

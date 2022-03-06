@@ -28,27 +28,39 @@ namespace AdoptPet.Pages.Ads
 
         public IList<Ad> Ad { get; set; }
 
-        public IList<Ad> ApprovedAds { get; set; }
+        //public IList<Ad> ApprovedAds { get; set; }
 
         [BindProperty]
         public Ad AdToDelete { get; set; }
 
         public async Task OnGetAsync()
         {
-            Ad = await _context.Ad
+            var ads = await _context.Ad
                 .Include(a => a.Breed)
                 .Include(a => a.Place)
-                .Include(x => x.Images.Where(i => i.isPoster.Equals(true)))
                 .OrderBy(a => a.AvailableFrom)
                 .ToListAsync();
 
-            ApprovedAds = await _context.Ad
-                .Where(a=>a.Status.Equals(AdStatus.Zatwierdzone))
-                .Include(a => a.Breed)
-                .Include(a => a.Place)
-                .Include(x => x.Images.Where(i => i.isPoster.Equals(true)))
-                .OrderBy(a => a.AvailableFrom)
-                .ToListAsync();
+            var isAuthorized = User.IsInRole(Constants.ManagersRole) ||
+                               User.IsInRole(Constants.AdministratorsRole);
+
+            var currentUserId = UserManager.GetUserId(User);
+
+            if(!isAuthorized)
+            {
+                ads = ads.Where(a => a.Status == AdStatus.Zatwierdzone ||
+                                   a.OwnerId == currentUserId).ToList();
+            }
+
+            Ad = ads.ToList();
+
+            //ApprovedAds = await _context.Ad
+            //    .Where(a=>a.Status.Equals(AdStatus.Zatwierdzone))
+            //    .Include(a => a.Breed)
+            //    .Include(a => a.Place)
+            //    .Include(x => x.Images.Where(i => i.isPoster.Equals(true)))
+            //    .OrderBy(a => a.AvailableFrom)
+            //    .ToListAsync();
         }
 
         public async Task<IActionResult> OnPostDelete(Guid? id)

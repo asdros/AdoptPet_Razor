@@ -16,6 +16,20 @@
    <label>
 				@Html.DisplayFor(model => model.Ad.AvailableFrom)
    </label>
+   <label>
+			@if(Model.Owner.PhoneNumber==null)
+			{
+				<text>Brak numeru telefonu</text>			
+			}
+			else if (User.Identity.IsAuthenticated)
+			{
+				@Html.DisplayFor(model=>model.Owner.PhoneNumber)
+			}
+			else
+			{
+				@Model.Owner.PhoneNumber.Substring(0,5)
+			}
+   </label>
   </dd>
   <dd class="col-sm-1">
 			@Html.DisplayFor(model=>model.Ad.Status)

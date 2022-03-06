@@ -21,7 +21,7 @@ namespace AdoptPet.Pages
 
         public IActionResult OnGet()
         {
-            return RedirectToPage("./Ads/Index");
+            return RedirectToPage("./IndexAnon");
         }
     }
 }

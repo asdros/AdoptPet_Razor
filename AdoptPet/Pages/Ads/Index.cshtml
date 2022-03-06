@@ -12,19 +12,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Ad[0].Title)
+                Tytuł
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ad[0].AvailableFrom)
+                Dodane
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ad[0].Breed.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ad[0].Place)
+                Rasa
             </th>  
             <th>
-                @Html.DisplayNameFor(model=>model.Ad[0].Status)
+                Status
             </th>
             <th>
                 Operacje
@@ -44,9 +41,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Breed.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Place.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem=>item.Status)
@@ -94,7 +88,7 @@
     </tbody>
     </table>
 
-    <div class="container ">
+    @*<div class="container ">
         <div class="row justify-content-center">
             @foreach(var item in Model.ApprovedAds)
     {
@@ -112,5 +106,5 @@
     </div>
     }
     </div>
-    </div>
+    </div>*@
 

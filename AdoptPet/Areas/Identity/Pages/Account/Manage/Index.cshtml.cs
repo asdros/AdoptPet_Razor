@@ -32,7 +32,7 @@ namespace AdoptPet.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Phone]
+            [Phone(ErrorMessage = "Podany numer telefonu nie jest prawidłowy.")]
             public string PhoneNumber { get; set; }
         }
 

@@ -15,8 +15,10 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">AdoptPet</a>
+                AdoptPet
+                <a class="navbar-brand" asp-area="" asp-page="/IndexAnon">
                 <img src="/logo_navbar.png" width="48" height="48" />
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -32,7 +34,13 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Panel ogłoszeń</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Ads/Index">Panel ogłoszeń</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Obserwowane</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Wiadomości</a>
                             </li>
                         }
                     </ul>
