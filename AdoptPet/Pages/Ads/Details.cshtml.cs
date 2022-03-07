@@ -10,6 +10,7 @@ using AdoptPet.Areas.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace AdoptPet.Pages.Ads
 {
@@ -18,10 +19,13 @@ namespace AdoptPet.Pages.Ads
     {
         private readonly ApplicationDbContext _context;
 
-        public DetailsModel(ApplicationDbContext context, IAuthorizationService authorizationService, UserManager<IdentityUser> userManager)
+        private readonly INotyfService _notyfService;
+
+        public DetailsModel(ApplicationDbContext context, IAuthorizationService authorizationService, UserManager<IdentityUser> userManager, INotyfService notyfService)
             :base(context,authorizationService,userManager)
         {
             _context = context;
+            _notyfService = notyfService;
         }
 
         public Ad Ad { get; set; }
@@ -29,6 +33,11 @@ namespace AdoptPet.Pages.Ads
         public IEnumerable<Image> Images { get; set; }
 
         public IdentityUser Owner { get; set; }
+
+        [BindProperty]
+        public WatchedItem WatchedItem { get; set; }
+
+        public string currentUserId { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string link)
         {
@@ -59,7 +68,7 @@ namespace AdoptPet.Pages.Ads
 
             var isAuthorized = User.IsInRole(Constants.ManagersRole) || User.IsInRole(Constants.AdministratorsRole);
 
-            var currentUserId = UserManager.GetUserId(User);
+            currentUserId = UserManager.GetUserId(User);
 
             if(!isAuthorized && currentUserId!=Ad.OwnerId && Ad.Status!=AdStatus.Zatwierdzone)
             {
@@ -92,6 +101,33 @@ namespace AdoptPet.Pages.Ads
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
+        }
+
+        public async Task<IActionResult> OnPostAddWatchedItem(Guid adId, string currentUserId)
+        {
+            var ad = await _context.Ad.Where(a => 
+                                                a.Id.Equals(adId)).FirstOrDefaultAsync();
+
+            if(ad==null)
+            {
+                return NotFound();
+            }
+
+            var watchedItemsByUser = await _context.WatchedItem.Where(w => w.OwnerId.Equals(currentUserId)).ToListAsync();
+
+            if(watchedItemsByUser.Any(w=>w.AdId==adId))
+            {
+                _notyfService.Error("Obserwujesz już to ogłoszenie!");
+                return RedirectToPage("Details", new { link=ad.NormalizedLink});
+            }
+
+            WatchedItem.AdId = adId;
+            WatchedItem.OwnerId = currentUserId;
+
+             _context.WatchedItem.Add(WatchedItem);
+            await _context.SaveChangesAsync();
+
+            return Page();
         }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using AspNetCoreHero.ToastNotification;
 
 namespace AdoptPet.Extensions
 {
@@ -38,6 +39,14 @@ namespace AdoptPet.Extensions
                                     .RequireAuthenticatedUser()
                                     .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
+            });
+
+        public static void ConfigureNotyfications(this IServiceCollection services) =>
+            services.AddNotyf(config =>
+            {
+                config.DurationInSeconds = 10;
+                config.IsDismissable = true;
+                config.Position = NotyfPosition.TopRight;
             });
     }
 }

@@ -33,6 +33,7 @@ namespace AdoptPet
             services.ConfigureDefaultIdentity();
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.ConfigureAuthorization();
+            services.ConfigureNotyfications();
 
             services.AddScoped<IAuthorizationHandler, OwnerAuthorizationHandler>();
             services.AddSingleton<IAuthorizationHandler, AdministratorAuthorizationHandler>();

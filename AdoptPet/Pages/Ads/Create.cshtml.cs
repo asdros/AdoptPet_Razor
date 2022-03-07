@@ -36,7 +36,6 @@ namespace AdoptPet.Pages.Ads
         {
             ViewData["AnimalId"] = new SelectList(_context.Animal, "Id", "Species");
             ViewData["BreedId"] = new SelectList(_context.Breed, "Id", "Name");
-            //    ViewData["PlaceId"] = new SelectList(_context.Place, "Id", "Id");
 
             return Page();
         }
@@ -47,7 +46,6 @@ namespace AdoptPet.Pages.Ads
         [BindProperty]
         public List<IFormFile> Images { get; set; }
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
