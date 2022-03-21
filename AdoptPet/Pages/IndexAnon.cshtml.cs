@@ -33,7 +33,7 @@ namespace AdoptPet.Pages
               .Where(a => a.Status.Equals(AdStatus.Zatwierdzone))
               .Include(a => a.Breed)
               .Include(a => a.Place)
-              .Include(x => x.Images.Where(i => i.isPoster.Equals(true)))
+              .Include(a => a.Images.Where(i => i.isPoster.Equals(true)))
               .OrderBy(a => a.AvailableFrom)
               .ToListAsync();
         }

@@ -115,6 +115,8 @@ namespace AdoptPet.Pages.Ads
 
             var watchedItemsByUser = await _context.WatchedItem.Where(w => w.OwnerId.Equals(currentUserId)).ToListAsync();
 
+            //toast
+
             if(watchedItemsByUser.Any(w=>w.AdId==adId))
             {
                 _notyfService.Error("Obserwujesz już to ogłoszenie!");
@@ -127,6 +129,7 @@ namespace AdoptPet.Pages.Ads
              _context.WatchedItem.Add(WatchedItem);
             await _context.SaveChangesAsync();
 
+            _notyfService.Success("Dodano do listy obserwujących");
             return Page();
         }
     }

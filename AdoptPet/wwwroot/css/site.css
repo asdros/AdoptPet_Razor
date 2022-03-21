@@ -167,3 +167,21 @@ span.carousel-control-prev-icon {
 .modal-backdrop {
     opacity: 0.5 !important;
 }
+
+.watchItemPhoto {
+    max-width: 300px;
+    max-height: 300px;
+}
+
+.trashWatchItem {
+    float: left;
+    margin-right: 10px;
+}
+
+.forwardWatchItem {
+    float: left;
+}
+
+.watchItemIcons {
+    padding-left: 20px;
+}

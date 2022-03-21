@@ -2,37 +2,58 @@
 @model AdoptPet.Pages.WatchedItemsModel
 
 @{
-    ViewData["Title"] = "WatchedItems";
+	ViewData["Title"] = "Obserwowane";
 }
 
-<h1>WatchedItems</h1>
+<h1>Obserwowane ogłoszenia</h1>
 
-<h4>WatchedItem</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="WatchedItem.AdId" class="control-label"></label>
-                <select asp-for="WatchedItem.AdId" class ="form-control" asp-items="ViewBag.AdId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="WatchedItem.OwnerId" class="control-label"></label>
-                <input asp-for="WatchedItem.OwnerId" class="form-control" />
-                <span asp-validation-for="WatchedItem.OwnerId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
+<div class="container ">
+ <div class="row justify-content-center">
+	 @if(!Model.WatchedItems.Any())
+		{
+			<h3>Pusta lista obserwowanych ogłoszeń</h3>
+		}
+		else
+		{
+		@foreach (var item in Model.WatchedItems)
+		{
+	  <div class="row" style="border:1px solid green; padding:10px 10px">
+	   <div class="col">
+		<a asp-page="./Ads/Details" asp-route-link="@item.Ad.NormalizedLink">
+		 <img src="/images/@item.Ad.Id/@item.Ad.Images.SingleOrDefault().Name" class="watchItemPhoto" alt="@item.Ad.Images.SingleOrDefault().Name" />
+		</a>
+	   </div>
+	   <div class="col">
+		<ul>
+		 <li>
+		  <a asp-page="./Ads/Details" asp-route-link="@item.Ad.NormalizedLink">
+								@item.Ad.Title
+		  </a>
+		 </li>
+		 <li>
+							@item.Ad.Breed.Animal.Species, @item.Ad.Breed.Name
+		 </li>
+		 <li>
+							@item.Ad.Place.Name
+		 </li>
+		</ul>
+		<div class="watchItemIcons">
+		 <!-- delete watchitem-->
+					<form asp-page-handler="delete" asp-route-id="@item.Id" method="post">
+		  <input type="image" class="btn btn-outline-dark trashWatchItem" src="./assets/trash.svg" />
+		 </form>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+		 <!-- redirect to ad-->
+		 					<a asp-page="./Ads/Details" asp-route-link="@item.Ad.NormalizedLink" class="btn btn-outline-dark forwardWatchItem">
+							 <img class="bi bi-box-arrow-in-right forwardWatchItem" src="./assets/box-arrow-in-right.svg" />
+</a>
+		</div>
+	   </div>
+
+	  </div>
+		}
+		}
+ </div>
+</div>
