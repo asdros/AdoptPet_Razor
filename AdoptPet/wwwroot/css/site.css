@@ -185,3 +185,9 @@ span.carousel-control-prev-icon {
 .watchItemIcons {
     padding-left: 20px;
 }
+
+.usersList{
+    height: 100px;
+    overflow: hidden;
+    overflow-y: scroll;
+}

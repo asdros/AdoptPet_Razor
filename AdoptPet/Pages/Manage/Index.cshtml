@@ -1,0 +1,48 @@
+﻿@page
+@model AdoptPet.Pages.Manage.IndexModel
+@{
+	ViewData["Title"] = "Panel moderacyjny";
+}
+
+
+<div class="container ">
+ <div class="row justify-content-right">
+		@if (User.IsInRole("Administrators"))
+		{
+	  <div class="col-sm">
+	   <h4>Nadaj bądź pozbaw uprawnień moderatorskich</h4>
+	  </div>
+	  <div class="col-sm">
+	   <h5>Użytkownicy</h5>
+	   <nav>
+		<ul class="usersList">
+						@foreach (var users in Model.Users)
+						{
+			 <li>@users.Username</li>
+						}
+		</ul>
+	   </nav>
+	   <form asp-page-handler="AddModerator" method="post">
+		<input type="text" name="email" value="" placeholder="Adres e-mail" />
+		<button class="btn btn-danger">Dodaj</button>
+	   </form>
+	   		  <br /><br />
+	  </div>
+	  <div class="col-sm">
+	   <h5>Moderatorzy</h5>
+	   <nav>
+		<ul class="usersList">
+						@foreach (var users in Model.Moderators)
+						{
+			 <li>@users.Username</li>
+						}
+		</ul>
+	   </nav>
+	   <form asp-page-handler="RemoveModerator" method="post">
+		<input type="text" name="email" value="" placeholder="Adres e-mail" />
+		<button class="btn btn-warning">Usuń</button>
+	   </form>
+	  </div>
+		}
+ </div>
+</div>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.Models;
 using Entities.DTO;
+using Microsoft.AspNetCore.Identity;
 
 namespace AdoptPet.Extensions
 {
@@ -16,7 +17,8 @@ namespace AdoptPet.Extensions
                         .Join(", ", s.Name, s.District.Name, s.District.Province.Name)));
 
             CreateMap<ImageForCreationDTO, Image>();
-            CreateMap<AdForUpdateDTO, Ad>().ReverseMap(); 
+            CreateMap<AdForUpdateDTO, Ad>().ReverseMap();
+            CreateMap<IdentityUser, UserDTO>();
         }
     }
 }

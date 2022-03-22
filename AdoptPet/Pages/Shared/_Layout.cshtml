@@ -27,11 +27,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/IndexAnon">Strona główna</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
                         @if (User.Identity.IsAuthenticated)
                         {
+                            @if (User.IsInRole("Administrators"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Manage/Index">Zarządzaj</a>
+                                </li>
+                            }
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Ads/Index">Panel ogłoszeń</a>
                             </li>
@@ -39,7 +42,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-page="/WatchedItems">Obserwowane</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Wiadomości</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Messages">Wiadomości</a>
                             </li>
                         }
                     </ul>
