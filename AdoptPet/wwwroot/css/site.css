@@ -187,7 +187,12 @@ span.carousel-control-prev-icon {
 }
 
 .usersList{
-    height: 100px;
+    height: 200px;
     overflow: hidden;
     overflow-y: scroll;
+}
+
+.menuAnimalSpecies
+{
+    display:none;
 }

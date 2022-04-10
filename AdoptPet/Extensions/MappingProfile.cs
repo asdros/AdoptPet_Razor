@@ -19,6 +19,9 @@ namespace AdoptPet.Extensions
             CreateMap<ImageForCreationDTO, Image>();
             CreateMap<AdForUpdateDTO, Ad>().ReverseMap();
             CreateMap<IdentityUser, UserDTO>();
+
+            CreateMap<Breed, BreedManagerViewDTO>()
+                .ForMember(d =>d.AnimalSpecies, opt =>opt.MapFrom(s=>s.Animal.Species));
         }
     }
 }

@@ -1,16 +1,16 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AdoptPet.Data;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
+using Contracts;
 using Entities.DTO;
 using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdoptPet.Pages.Manage
 {
@@ -20,26 +20,44 @@ namespace AdoptPet.Pages.Manage
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly INotyfService _notyfService;
+        private readonly ILoggerManager _loggerManager;
 
-        public IndexModel(ApplicationDbContext context, IAuthorizationService authorizationService, UserManager<IdentityUser> userManager, IMapper mapper, INotyfService notyfService)
+        public IndexModel(ApplicationDbContext context, IAuthorizationService authorizationService, UserManager<IdentityUser> userManager, IMapper mapper, INotyfService notyfService, ILoggerManager loggerManager)
             : base(context, authorizationService, userManager)
         {
             _context = context;
             _mapper = mapper;
             _notyfService = notyfService;
+            _loggerManager = loggerManager;
         }
 
-        public Animal Animal { get; set; }
-        public Breed Breed { get; set; }
+        public IList<Animal> Animals { get; set; }
+        public IList<BreedManagerViewDTO> Breeds { get; set; }
         public IList<UserDTO> Users { get; set; }
         public IList<UserDTO> Moderators { get; set; }
 
+        public Breed Breed { get; set; }
+        public Animal Animal { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
+            Animals = await _context.Animal.ToListAsync();
+
+            var breedsFromDB = await _context.Breed.ToListAsync();
+
+            Breeds = _mapper.Map<IList<BreedManagerViewDTO>>(breedsFromDB);
+
+            foreach (var element in Breeds)
+            {
+                element.CountOfAds = _context.Ad.Where(a => a.Breed.Name.Equals(element.Name)).ToList().Count;
+            }
+
             var managers = await UserManager.GetUsersInRoleAsync("Managers");
 
-            var managersUserName = managers.Select(x => x.UserName);
-            var users = UserManager.Users.Where(u => !managersUserName.Contains(u.UserName)).ToList();
+            var managersUserName = managers.Select(x => x.UserName).ToList();
+
+            // get users without any role
+            var users = await UserManager.Users.Where(u => !managersUserName.Contains(u.UserName)).ToListAsync();
 
             Users = _mapper.Map<IList<UserDTO>>(users);
             Moderators = _mapper.Map<IList<UserDTO>>(managers);
@@ -96,6 +114,91 @@ namespace AdoptPet.Pages.Manage
         }
         #endregion
 
+        #region breeds&AnimalsManage
 
+        public async Task<IActionResult> OnPostAddBreedAsync(string name, int animalId)
+        {
+            //check if this species already exists in the database
+            var breedsFromDB = await _context.Animal.Where(a => a.Species.Equals(name)).ToListAsync();
+
+            if (breedsFromDB.Any())
+            {
+                _notyfService.Error("Dana rasa istnieje ju¿ w bazie");
+                return RedirectToPage("/Manage/Index");
+            }
+
+            var speciesFromDB = await _context.Animal.Where(a => a.Id.Equals(animalId)).ToListAsync();
+
+            if (!speciesFromDB.Any())
+            {
+                _notyfService.Error("Brak podanego gatunku");
+                return RedirectToPage("/Manage/Index");
+            }
+
+            Breed.Name = name.ToLower();
+            Breed.AnimalId = animalId;
+            _context.Add(Breed);
+
+            await _context.SaveChangesAsync();
+
+            _loggerManager.LogInfo($"User {User.Identity.Name} added animal breed {name}");
+            _notyfService.Success($"Poprawnie dodano gatunek {name}");
+            return RedirectToPage("/Manage/Index");
+        }
+
+        public async Task<IActionResult> OnPostRemoveBreedAsync(string name, int animalId)
+        {
+            if (name == "inna")
+            {
+                _notyfService.Error("Niedozwolona operacja usuniêcia rasy");
+                return RedirectToPage("/Manage/Index");
+            }
+
+            var animalFromDbForExistedAds = await _context.Breed.Where(b => b.AnimalId.Equals(animalId) && b.Name.Equals("inna")).SingleOrDefaultAsync();
+            var breedsFromDB = await _context.Breed.Where(b => b.Name.Equals(name)).ToListAsync();
+
+            if (!breedsFromDB.Any())
+            {
+                _notyfService.Error("Podana rasa nie istnieje w bazie");
+                return RedirectToPage("/Manage/Index");
+            }
+
+            var breedToDelete = await _context.Breed.Where(b => b.Name.Equals(name)).SingleOrDefaultAsync();
+
+            // change breed in existed ads to other
+            var adsToUpdateFromDB = await _context.Ad.Where(a => a.Breed.Name.Equals(name)).ToListAsync();
+            adsToUpdateFromDB.ForEach(a => a.Breed = animalFromDbForExistedAds);
+
+            //delete breed from db
+            _context.Breed.Remove(breedToDelete);
+            await _context.SaveChangesAsync();
+
+            _loggerManager.LogWarn($"User {User.Identity.Name} deleted animal species {name}");
+            _notyfService.Success($"Poprawnie usuniêto gatunek {name}");
+            return RedirectToPage("/Manage/Index");
+        }
+
+        public async Task<IActionResult> OnPostAddAnimalAsync(string name)
+        {
+            //check if this species already exists in the database
+            var animalsFromDB = await _context.Animal.Where(a => a.Species.Equals(name)).ToListAsync();
+
+            if (animalsFromDB.Any())
+            {
+                _notyfService.Error("Dana rasa istnieje ju¿ w bazie");
+                return RedirectToPage("/Manage/Index");
+            }
+
+            Animal.Species = name.ToLower();
+            _context.Add(Animal);
+
+            await _context.SaveChangesAsync();
+
+            _loggerManager.LogInfo($"User {User.Identity.Name} added animal species {name}");
+            _notyfService.Success("Poprawnie dodano now¹ rasê");
+            return RedirectToPage("/Manage/Index");
+        }
+
+        #endregion
     }
 }

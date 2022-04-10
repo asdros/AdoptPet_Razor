@@ -45,4 +45,61 @@
 	  </div>
 		}
  </div>
+  <div class="row justify-content-right">
+		@if (User.IsInRole("Administrators") || User.IsInRole("Managers"))
+		{
+	  <div class="col-sm">
+	   <h4>Dodaj lub usuń rasę bądź gatunek</h4>
+	   <span>W nawiasie znajduje się liczba ogłoszeń odpowiadającym danej rasie (również te, które nie zostały jeszcze zaakceptowane). Podczas usuwania rasy odpowiadającym jej ogłoszeniom zostanie nadana rasa "Inne"</span>
+	  </div>
+	  <div class="col-sm">
+	   <h5>Rasa</h5>
+	   <nav>
+		<ul class="usersList">
+						@foreach (var breed in Model.Breeds)
+						{
+			 <li>@breed.Name, @breed.AnimalSpecies (@breed.CountOfAds)</li>
+						}
+		</ul>
+	   </nav>
+	   <form method="post">
+		<input type="text" name="name" value="" placeholder="Wpisz rasę" />
+		<button class="btn btn-info" type="button" id="showMenu">Akcja</button>
+		<div class="menuAnimalSpecies">
+		<select name="animalId" data-val-required="Wybór gatunku jest wymagany">
+	  @foreach (var animal in Model.Animals)
+						{
+							<option value="@animal.Id">@animal.Species</option>
+						}
+  </select>
+  		<button asp-page-handler="AddBreed" class="btn btn-danger">Dodaj</button>
+		<button asp-page-handler="RemoveBreed" class="btn btn-warning">Usuń</button>
+  </div>
+	   </form>
+	   		  <br /><br />
+	  </div>
+	  <div class="col-sm">
+	   <h5>Gatunek</h5>
+	   <nav>
+		<ul class="usersList">
+						@foreach (var animal in Model.Animals)
+						{
+			 <li>@animal.Species</li>
+						}
+		</ul>
+	   </nav>
+	   <form method="post">
+		<input type="text" name="name" value="" placeholder="Dodaj gatunek" />
+		<button asp-page-handler="AddAnimal" class="btn btn-success">Dodaj</button>
+	   </form>
+	  </div>
+		}
+ </div>
 </div>
+
+<script>
+	$(document).ready(function(){
+  showHideAnimalSpecies();
+});
+
+</script>

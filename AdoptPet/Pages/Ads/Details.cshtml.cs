@@ -105,8 +105,7 @@ namespace AdoptPet.Pages.Ads
 
         public async Task<IActionResult> OnPostAddWatchedItem(Guid adId, string currentUserId)
         {
-            var ad = await _context.Ad.Where(a => 
-                                                a.Id.Equals(adId)).FirstOrDefaultAsync();
+            var ad = await _context.Ad.Where(a => a.Id.Equals(adId)).FirstOrDefaultAsync();
 
             if(ad==null)
             {

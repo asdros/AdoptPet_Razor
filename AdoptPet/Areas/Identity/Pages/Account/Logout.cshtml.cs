@@ -25,8 +25,10 @@ namespace AdoptPet.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
+            var userName = User.Identity.Name;
+
             await _signInManager.SignOutAsync();
-            _loggerManager.LogInfo("User logged out.");
+            _loggerManager.LogInfo($"User {userName} logged out.");
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);

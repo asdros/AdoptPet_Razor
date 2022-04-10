@@ -93,3 +93,9 @@ function autocompletePlaceInput() {
         }
     });
 };
+
+function showHideAnimalSpecies() {
+    $('#showMenu').click(function () {
+        $('.menuAnimalSpecies').toggle("slide");
+    });
+};

@@ -23,7 +23,7 @@
 			}
 			else if (User.Identity.IsAuthenticated)
 			{
-				@Html.DisplayFor(model=>model.Owner.PhoneNumber)
+				<text>Nr tel.</text>@Html.DisplayFor(model=>model.Owner.PhoneNumber)
 			}
 			else
 			{
@@ -60,7 +60,7 @@
 			}
   </dd>
   <dd class="col-sm-2">
-			@if (User.Identity.IsAuthenticated && Model.currentUserId!=Model.Owner.Id)
+			@if (User.Identity.IsAuthenticated && Model.currentUserId!=Model.Owner.Id && Model.Ad.Status.Equals(AdStatus.Zatwierdzone))
 			{
 				   <form asp-page-handler="AddWatchedItem" asp-route-adId="@Model.Ad.Id" asp-route-currentUserId="@Model.currentUserId" method="post">
 						  <input type="image" class="btn btn-outline-dark" src="/assets/bag-heart.svg" />
