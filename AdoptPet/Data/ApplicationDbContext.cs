@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using AdoptPet.Models.Configuration;
+using Entities.Models.Conversation;
 
 namespace AdoptPet.Data
 {
@@ -42,5 +43,8 @@ namespace AdoptPet.Data
         public DbSet<Breed> Breed { get; set; }
         public DbSet<Image> Image { get; set; }
         public DbSet<WatchedItem> WatchedItem { get; set; }
+
+        public DbSet<Chat> Chat { get; set; }
+        public DbSet<Message> Message { get; set; }
     }
 }

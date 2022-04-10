@@ -18,7 +18,7 @@ namespace AdoptPet.Extensions
             {
                 options.UseLazyLoadingProxies();
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-                options.EnableSensitiveDataLogging(true);
+                options.EnableSensitiveDataLogging(false);
             });
 
         public static void ConfigureLoggerService(this IServiceCollection services) =>
