@@ -4,14 +4,16 @@ using AdoptPet.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AdoptPet.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220410212321_chatEntitiesUpdate")]
+    partial class chatEntitiesUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,7 +147,7 @@ namespace AdoptPet.Data.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("MessageId");
 
-                    b.Property<DateTime>("DateOfSending")
+                    b.Property<DateTime>("AvailableFrom")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("ChatId")

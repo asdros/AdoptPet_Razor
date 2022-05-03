@@ -186,13 +186,16 @@ span.carousel-control-prev-icon {
     padding-left: 20px;
 }
 
-.usersList{
+.usersList {
     height: 200px;
     overflow: hidden;
     overflow-y: scroll;
 }
 
-.menuAnimalSpecies
-{
-    display:none;
+.menuAnimalSpecies {
+    display: none;
+}
+
+.chatImage {
+    max-height:125px;
 }

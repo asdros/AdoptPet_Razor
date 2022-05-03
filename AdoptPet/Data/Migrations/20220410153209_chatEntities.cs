@@ -35,7 +35,7 @@ namespace AdoptPet.Data.Migrations
                     OwnerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceiverId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ChatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AvailableFrom = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DateOfSending = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

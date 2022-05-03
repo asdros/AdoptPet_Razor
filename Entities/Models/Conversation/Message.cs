@@ -12,27 +12,27 @@ namespace Entities.Models.Conversation
         [MaxLength(500, ErrorMessage = "Maksymalna długość to 1000 znaków.")]
         public string TextMessage { get; set; }
 
-        public string OwnerId { get; set; }
-
-        public string ReceiverId { get; set; }
+        public string SendByUserId { get; set; }
+        [NotMapped]
+        public string UsernameOfSender { get; set; }
 
         [ForeignKey(nameof(Chat))]
         public Guid ChatId { get; set; }
         public virtual Chat Chat { get; set; }
 
         //validation to set a datatime during creating new entity to database
-        private DateTime _availableFrom;
+        private DateTime _dateOfSending;
 
-        public DateTime AvailableFrom
+        public DateTime DateOfSending
         {
-            get { return _availableFrom; }
+            get { return _dateOfSending; }
             set
             {
-                if (AvailableFrom == DateTime.MinValue)
+                if (DateOfSending == DateTime.MinValue)
                 {
                     value = DateTime.Now;
                 }
-                _availableFrom = value;
+                _dateOfSending = value;
             }
         }
 

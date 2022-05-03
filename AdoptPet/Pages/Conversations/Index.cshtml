@@ -1,0 +1,48 @@
+﻿@page
+@model AdoptPet.Pages.Conversations.IndexModel
+
+@{
+	ViewData["Title"] = "Wiadomości";
+}
+
+<div class="container ">
+ <div class="row justify-content-center">
+		@if (!Model.Chats.Any())
+		{
+	  <h3>Pusta lista wiadomości</h3>
+		}
+		else
+		{
+			@foreach (var chat in Model.Chats)
+			{
+		  <div class="row" style="border:1px solid green; padding:10px 10px">
+		   <div class="col align-self-center">
+			<img src="/images/@chat.AdId/@chat.Ad.Images.SingleOrDefault().Name" class="rounded chatImage" alt="@chat.Ad.Images.SingleOrDefault().Name" />
+		   </div>
+		   <div class="col-6">
+			<a asp-page="./Ads/Details" asp-route-link="@chat.Ad.NormalizedLink">
+			 <h5>@chat.Ad.Title</h5>
+			</a>
+						@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.DateOfSending).SingleOrDefault()
+			<br />
+			<strong>@chat.UsernameOfCreator:</strong>
+
+			<p style="margin-bottom:0">
+							@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.TextMessage.Substring(0,Math.Min(20,m.TextMessage.Length))+ "...").SingleOrDefault()
+			</p>
+						@if (chat.CreatedByUserId == Model.currentUserId)
+						{
+							<form asp-page-handler="delete" asp-route-id="@chat.Id" method="post">
+							<input type="image" class="btn btn-outline-dark trashWatchItem" src="/assets/trash.svg" />
+							</form>
+						}
+			<!-- redirect to messages-->
+				<a asp-page="./Messages" asp-route-chatId="@chat.Id" class="btn btn-outline-dark forwardWatchItem">
+			 <img class="bi bi-box-arrow-in-right forwardWatchItem" src="./assets/box-arrow-in-right.svg" />
+			</a>
+		   </div>
+		  </div>
+			}
+		}
+ </div>
+</div>

@@ -1,0 +1,51 @@
+﻿@page "{chatId}"
+@model AdoptPet.Pages.Conversations.MessagesModel
+
+@{
+	ViewData["Title"] = "Konwersacja";
+}
+
+<h3>Konwersacja z użytkownikiem
+@if(Model.currentUserId==Model.Chat.CreatedByUserId)
+	{
+		@Model.adOwnerUsername
+	}
+	else
+	{
+		@User.Identity.Name
+	}
+</h3>
+<h5>na temat ogłoszenia 
+		<a asp-page="/Ads/Details" asp-route-link="@Model.Chat.Ad.NormalizedLink">
+@Model.Chat.Ad.Title
+</a>
+</h5>
+
+
+<div class="container" style="border:1px solid green; padding:10px 10px">
+		@if (!Model.Messages.Any())
+		{
+			<h3>Pusta lista wiadomości</h3>
+		}
+		else{
+		@foreach (var message in Model.Messages)
+		{
+			<div class="row" style="margin-left: auto; margin-right:auto">
+			<div class="col-sm-4" style="border:1px solid black; padding:10px 10px">
+			<strong>@message.UsernameOfSender</strong>
+			<br />
+			@message.DateOfSending
+   </div>
+   <div class="col-sm-6" style="border:1px solid black; padding:10px 10px; margin-right:auto">
+	   <p>@message.TextMessage</p>
+   </div>
+   @if (message.SendByUserId == Model.currentUserId)
+						{
+							<form asp-page-handler="delete" asp-route-id="@message.Id" method="post">
+								<input type="image" class="btn btn-outline-dark trashWatchItem" src="/assets/trash.svg" />
+							</form>
+						}
+   </div>
+		}
+  }
+ </div>

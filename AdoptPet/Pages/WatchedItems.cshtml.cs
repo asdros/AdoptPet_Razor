@@ -48,7 +48,7 @@ namespace AdoptPet.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostDeleteAsync(Guid? id)
+        public async Task<IActionResult> OnPostDeleteAsync(Guid id)
         {
 
             var watchItem = await _context.WatchedItem.Where(w => w.Id.Equals(id)).SingleOrDefaultAsync();
