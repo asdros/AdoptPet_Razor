@@ -5,16 +5,17 @@
 	ViewData["Title"] = "Konwersacja";
 }
 
-<h3>Konwersacja z użytkownikiem
-@if(Model.currentUserId==Model.Chat.CreatedByUserId)
+<h4>Konwersacja z użytkownikiem
+@if(Model.currentUserId==Model.Chat.Ad.OwnerId)
 	{
-		@Model.adOwnerUsername
+		@Model.Chat.UsernameOfCreator
 	}
 	else
 	{
-		@User.Identity.Name
+		@Model.adOwnerUsername
+
 	}
-</h3>
+</h4>
 <h5>na temat ogłoszenia 
 		<a asp-page="/Ads/Details" asp-route-link="@Model.Chat.Ad.NormalizedLink">
 @Model.Chat.Ad.Title
@@ -48,4 +49,20 @@
    </div>
 		}
   }
+  <br />
+ <div class="row">
+  <form method="post" asp-route-chatId="@Model.Chat.Id">
+   <div class="col-sm-10">
+	<div class="form-group">
+	 <label asp-for="Message.TextMessage" class="control-label">Treść wiadomości</label>
+	 <textarea asp-for="Message.TextMessage" class="form-control" cols="100" rows="10"></textarea>
+	 <span asp-validation-for="Message.TextMessage" class="text-danger"></span>
+	</div>
+   </div>
+   <div class="col-sm-2">
+
+	<input type="submit" value="Wyślij wiadomość" class="btn btn-primary" />
+   </div>
+  </form>
  </div>
+</div>

@@ -23,12 +23,12 @@
 			<a asp-page="./Ads/Details" asp-route-link="@chat.Ad.NormalizedLink">
 			 <h5>@chat.Ad.Title</h5>
 			</a>
-						@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.DateOfSending).SingleOrDefault()
+						@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.DateOfSending).FirstOrDefault()
 			<br />
 			<strong>@chat.UsernameOfCreator:</strong>
 
 			<p style="margin-bottom:0">
-							@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.TextMessage.Substring(0,Math.Min(20,m.TextMessage.Length))+ "...").SingleOrDefault()
+							@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.TextMessage.Substring(0,Math.Min(20,m.TextMessage.Length))+ "...").FirstOrDefault()
 			</p>
 						@if (chat.CreatedByUserId == Model.currentUserId)
 						{

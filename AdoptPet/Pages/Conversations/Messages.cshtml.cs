@@ -29,8 +29,11 @@ namespace AdoptPet.Pages.Conversations
         public IList<Message> Messages { get; set; }
         public Chat Chat { get; set; }
 
+        [BindProperty]
+        public Message Message { get; set; }
+
         public string currentUserId { get; set; }
-        public string adOwnerUsername { get; set;}
+        public string adOwnerUsername { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid chatId)
         {
@@ -38,11 +41,14 @@ namespace AdoptPet.Pages.Conversations
 
             Chat = await _context.Chat.Where(c => c.Id.Equals(chatId)).SingleOrDefaultAsync();
 
-            if(Chat==null)
+            if (Chat == null)
             {
                 _notyfService.Error("B³¹d w przetwarzaniu danych");
                 return RedirectToPage("/Conversations/Index");
             }
+
+            var usernameOfCreatorChat = await UserManager.FindByIdAsync(Chat.CreatedByUserId);
+            Chat.UsernameOfCreator = usernameOfCreatorChat.UserName.Remove(usernameOfCreatorChat.UserName.IndexOf("@"));
 
             var ownerOfAdUsername = await UserManager.FindByIdAsync(Chat.Ad.OwnerId);
             adOwnerUsername = ownerOfAdUsername.UserName.Remove(ownerOfAdUsername.UserName.IndexOf("@"));
@@ -71,9 +77,9 @@ namespace AdoptPet.Pages.Conversations
                 return RedirectToPage("/Conversations/Messages", new { chatId = message.ChatId });
             }
 
-             currentUserId = UserManager.GetUserId(User);
+            currentUserId = UserManager.GetUserId(User);
 
-            if (message.UsernameOfSender != currentUserId)
+            if (message.SendByUserId != currentUserId)
             {
                 _notyfService.Warning("Niedozwolona akcja"); // only the author of the message can delete 
                 return RedirectToPage("/Conversations/Messages", new { chatId = message.ChatId });
@@ -84,6 +90,34 @@ namespace AdoptPet.Pages.Conversations
 
             _notyfService.Success("Wiadomoœæ zosta³a usuniêta.");
             return RedirectToPage("/Conversations/Messages", new { chatId = message.ChatId });
+        }
+
+        public async Task<IActionResult> OnPostAsync(Guid chatId)
+        {
+            if (!ModelState.IsValid)
+            {
+                _notyfService.Error("B³¹d w przetwarzaniu danych");
+                return RedirectToPage("/Conversations/Messages", new { chatId = chatId });
+            }
+
+            var chat = await _context.Chat.Where(c => c.Id.Equals(chatId)).SingleOrDefaultAsync();
+
+            if (chat == null)
+            {
+                _notyfService.Error("B³¹d w przetwarzaniu danych");
+                return RedirectToPage("./Conversations/Index");
+            }
+
+            Message.ChatId = chat.Id;
+            Message.DateOfSending = DateTime.Now;
+            Message.SendByUserId = UserManager.GetUserId(User);
+
+            _context.Message.Add(Message);
+
+            await _context.SaveChangesAsync();
+
+            _notyfService.Success("Poprawnie wys³ano wiadomoœæ");
+            return RedirectToPage("/Conversations/Messages", new { chatId = chatId });
         }
     }
 }

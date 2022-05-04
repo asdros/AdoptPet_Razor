@@ -9,7 +9,7 @@ namespace Entities.Models.Conversation
         [Column("MessageId")]
         public Guid Id { get; set; }
 
-        [MaxLength(500, ErrorMessage = "Maksymalna długość to 1000 znaków.")]
+        [MaxLength(500, ErrorMessage = "Maksymalna długość to 500 znaków.")]
         public string TextMessage { get; set; }
 
         public string SendByUserId { get; set; }
