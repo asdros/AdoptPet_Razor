@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AdoptPet.Models.Configuration
+namespace AdoptPet.Data.ModelConfiguration
 {
     public class PlaceConfiguration : IEntityTypeConfiguration<Place>
     {

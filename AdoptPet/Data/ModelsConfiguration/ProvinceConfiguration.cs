@@ -2,23 +2,23 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AdoptPet.Models.Configuration
+namespace AdoptPet.Data.ModelConfiguration
 {
-    public class AnimalConfiguration : IEntityTypeConfiguration<Animal>
+    public class ProvinceConfiguration : IEntityTypeConfiguration<Province>
     {
-        public void Configure(EntityTypeBuilder<Animal> builder)
+        public void Configure(EntityTypeBuilder<Province> builder)
         {
             builder.HasData
                 (
-                    new Animal
+                    new Province
                     {
                         Id = 1,
-                        Species = "kot"
+                        Name = "wielkopolskie"
                     },
-                    new Animal
+                    new Province
                     {
                         Id = 2,
-                        Species = "pies"
+                        Name = "mazowiecki"
                     }
                 );
         }

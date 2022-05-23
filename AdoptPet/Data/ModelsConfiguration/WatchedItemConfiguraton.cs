@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 
-namespace AdoptPet.Models.Configuration
+namespace AdoptPet.Data.ModelConfiguration
 {
     public class WatchedItemConfiguration : IEntityTypeConfiguration<WatchedItem>
     {
