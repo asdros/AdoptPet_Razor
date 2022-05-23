@@ -29,6 +29,8 @@ namespace AdoptPet.Pages.Conversations
         public IList<Chat> Chats { get; set; }
         public string currentUserId { get; set; }
 
+        public Chat Chat { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
             currentUserId = UserManager.GetUserId(User);
@@ -69,7 +71,7 @@ namespace AdoptPet.Pages.Conversations
 
             if (chat.CreatedByUserId != currentUserId)
             {
-                _notyfService.Warning("Niedozwolona akcja"); // only the author of the conversation can delete 
+                _notyfService.Warning("Niedozwolona akcja."); // only the author of the conversation can delete 
                 return RedirectToPage("/Conversations/Index");
             }
 
@@ -80,6 +82,24 @@ namespace AdoptPet.Pages.Conversations
             return RedirectToPage("/Conversations/Index");
         }
 
+        public async Task<IActionResult> OnPostCreateNewChatAsync(Guid adId)
+        {
+            var ad = await _context.Ad.Where(a => a.Id.Equals(adId)).SingleOrDefaultAsync(); ;
 
+            if(ad == null)
+            {
+                _notyfService.Warning("Og³oszenie jest nieosi¹galne.");
+                return RedirectToPage("./IndexAnon");
+            }
+
+            Chat.CreatedByUserId = UserManager.GetUserId(User);
+            Chat.AdId = ad.Id;
+
+            _context.Chat.Add(Chat);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("/Conversations/Messages", new { chatId = Chat.Id });
+        }
     }
 }

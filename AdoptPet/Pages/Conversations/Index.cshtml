@@ -15,19 +15,20 @@
 		{
 			@foreach (var chat in Model.Chats)
 			{
-		  <div class="row" style="border:1px solid green; padding:10px 10px">
+		  <div class="row" style="border:1px solid green; padding:10px 10px; margin-left:20px">
 		   <div class="col align-self-center">
 			<img src="/images/@chat.AdId/@chat.Ad.Images.SingleOrDefault().Name" class="rounded chatImage" alt="@chat.Ad.Images.SingleOrDefault().Name" />
-		   </div>
-		   <div class="col-6">
-			<a asp-page="./Ads/Details" asp-route-link="@chat.Ad.NormalizedLink">
-			 <h5>@chat.Ad.Title</h5>
+
+			<a asp-page="/Ads/Details" asp-route-link="@chat.Ad.NormalizedLink">
+			 <h6>@chat.Ad.Title</h6>
 			</a>
-						@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.DateOfSending).FirstOrDefault()
+			<b>Ostatnia wiadomość z</b>
 			<br />
-			<strong>@chat.UsernameOfCreator:</strong>
+				@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.DateOfSending).FirstOrDefault()
+			<br />
 
 			<p style="margin-bottom:0">
+							<strong>@chat.UsernameOfCreator:</strong>
 							@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.TextMessage.Substring(0,Math.Min(20,m.TextMessage.Length))+ "...").FirstOrDefault()
 			</p>
 						@if (chat.CreatedByUserId == Model.currentUserId)

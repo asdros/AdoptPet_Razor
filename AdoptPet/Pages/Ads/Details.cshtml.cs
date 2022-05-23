@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using Entities.Models.Conversation;
 
 namespace AdoptPet.Pages.Ads
 {
@@ -33,6 +34,9 @@ namespace AdoptPet.Pages.Ads
         public IEnumerable<Image> Images { get; set; }
 
         public IdentityUser Owner { get; set; }
+
+        [BindProperty]
+        public Chat Chat { get; set; }
 
         [BindProperty]
         public WatchedItem WatchedItem { get; set; }
@@ -130,6 +134,26 @@ namespace AdoptPet.Pages.Ads
 
             _notyfService.Success("Dodano do listy obserwujących");
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostCreateNewChatAsync(Guid adId)
+        {
+            var ad = await _context.Ad.Where(a => a.Id.Equals(adId)).SingleOrDefaultAsync(); ;
+
+            if (ad == null)
+            {
+                _notyfService.Warning("Ogłoszenie jest nieosiągalne.");
+                return RedirectToPage("./IndexAnon");
+            }
+
+            Chat.CreatedByUserId = UserManager.GetUserId(User);
+            Chat.AdId = ad.Id;
+
+            _context.Chat.Add(Chat);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("/Conversations/Messages", new { chatId = Chat.Id });
         }
     }
 }

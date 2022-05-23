@@ -9,6 +9,7 @@ namespace Entities.Models.Conversation
         [Column("MessageId")]
         public Guid Id { get; set; }
 
+        [Required(ErrorMessage ="Treść wiadomości nie może być pusta.")]
         [MaxLength(500, ErrorMessage = "Maksymalna długość to 500 znaków.")]
         public string TextMessage { get; set; }
 
