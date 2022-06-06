@@ -37,5 +37,12 @@ namespace Entities.Models.Conversation
             }
         }
 
+        public ChatStatus Status { get; set; }
+
+        public enum ChatStatus
+        {
+            Odczytane,
+            Nieodczytane
+        }
     }
 }

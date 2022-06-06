@@ -53,6 +53,13 @@ namespace AdoptPet.Pages.Conversations
             var ownerOfAdUsername = await UserManager.FindByIdAsync(Chat.Ad.OwnerId);
             adOwnerUsername = ownerOfAdUsername.UserName.Remove(ownerOfAdUsername.UserName.IndexOf("@"));
 
+            // check unauthorized access
+            if (currentUserId != Chat.CreatedByUserId && currentUserId != Chat.Ad.OwnerId)
+            {
+                _notyfService.Error("Nieautoryzowany dostêp!");
+                return RedirectToPage("/Conversations/Index");
+            }
+
             Messages = await _context.Message.Where(m => m.ChatId.Equals(chatId)).ToListAsync();
 
             if (Messages.Any())
@@ -108,9 +115,31 @@ namespace AdoptPet.Pages.Conversations
                 return RedirectToPage("./Conversations/Index");
             }
 
+            // change the status of the last message to just read
+
+            currentUserId = UserManager.GetUserId(User);
+            var lastMsg = chat.Messages.OrderByDescending(m => m.DateOfSending).FirstOrDefault();
+
+            var lastMsgFromDb = _context.Message.Where(m => m.Id.Equals(lastMsg.Id));
+
+            if (lastMsgFromDb == null)
+            {
+                _notyfService.Error("B³¹d w przetwarzaniu danych");
+                return RedirectToPage("./Conversations/Index");
+            }
+
+            if (lastMsg.SendByUserId == currentUserId)
+            {
+                lastMsg.Status = Message.ChatStatus.Odczytane;
+
+                _context.Entry(lastMsgFromDb).CurrentValues.SetValues(lastMsg);
+            }
+
+            //add a new message
             Message.ChatId = chat.Id;
             Message.DateOfSending = DateTime.Now;
             Message.SendByUserId = UserManager.GetUserId(User);
+            Message.Status = Message.ChatStatus.Nieodczytane;
 
             _context.Message.Add(Message);
 

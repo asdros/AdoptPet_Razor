@@ -29,7 +29,7 @@ function imagePreview() {
 
 function refreshAfterValidation() {
     window.location.reload();
-}
+};
 
 function validateImages() {
     var inp = document.getElementById('imageUpload');
@@ -38,7 +38,7 @@ function validateImages() {
         inp.focus();
         return false;
     }
-}
+};
 
 function breedsDropDownList() {
     $("#breedId").prop("disabled", true);
@@ -98,4 +98,14 @@ function showHideAnimalSpecies() {
     $('#showMenu').click(function () {
         $('.menuAnimalSpecies').toggle("slide");
     });
+};
+
+function blinkText() {
+    var f = document.getElementsByClassName('UnreadMessage');
+    for (var i = 0; i < f.length; i++) {
+        const unreadMsg = f[i]
+        setInterval(function () {
+            unreadMsg.style.color = (unreadMsg.style.color == 'red' ? 'black' : 'red');
+        }, 1000);
+    }
 };

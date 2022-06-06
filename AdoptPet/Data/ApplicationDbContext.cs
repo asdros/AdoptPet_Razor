@@ -1,7 +1,6 @@
 ﻿using Entities.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using AdoptPet.Models.Configuration;
 using Entities.Models.Conversation;
 
 namespace AdoptPet.Data

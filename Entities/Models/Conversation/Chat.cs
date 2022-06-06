@@ -13,18 +13,10 @@ namespace Entities.Models.Conversation
         [NotMapped]
         public string UsernameOfCreator { get; set; }
 
-        public ChatStatus Status { get; set; }
-
         [ForeignKey(nameof(Ad))]
         public Guid AdId { get; set; }
         public virtual Ad Ad { get; set; }
 
         public virtual ICollection<Message> Messages { get; set; }
-    }
-
-    public enum ChatStatus
-    {
-        Odczytane,
-        Nieodczytane
     }
 }

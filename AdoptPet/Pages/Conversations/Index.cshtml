@@ -22,7 +22,14 @@
 			<a asp-page="/Ads/Details" asp-route-link="@chat.Ad.NormalizedLink">
 			 <h6>@chat.Ad.Title</h6>
 			</a>
-			<b>Ostatnia wiadomość z</b>
+			@if(@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.SendByUserId).FirstOrDefault() != Model.currentUserId)
+			{
+				<b class="@((int)chat.Messages.OrderByDescending(m => m.DateOfSending).Select(m => m.Status).FirstOrDefault() == 1 ? "UnreadMessage" : "")">Ostatnia wiadomość z</b>
+			}
+			else
+			{
+				<b>Ostatnia wiadomość z</b>
+			}
 			<br />
 				@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.DateOfSending).FirstOrDefault()
 			<br />
@@ -47,3 +54,9 @@
 		}
  </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+		blinkText();
+    });
+</script>
