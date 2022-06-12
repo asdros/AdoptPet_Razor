@@ -42,7 +42,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-page="/WatchedItems">Obserwowane</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Conversations/Index">Wiadomości</a>
+                                @await Html.PartialAsync("_MessagesPartial", new _MessagesPartialModel())
                             </li>
                         }
                     </ul>

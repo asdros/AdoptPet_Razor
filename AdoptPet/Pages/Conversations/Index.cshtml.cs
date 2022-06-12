@@ -51,6 +51,12 @@ namespace AdoptPet.Pages.Conversations
                 {
                     var user = await UserManager.FindByIdAsync(chat.CreatedByUserId);
                     chat.UsernameOfCreator = user.UserName.Remove(user.UserName.IndexOf("@"));
+
+                    var AdOwnerUsername = await UserManager.FindByIdAsync(chat.Ad.OwnerId);
+                    chat.AdOwnerUsername = AdOwnerUsername.UserName.Remove(AdOwnerUsername.UserName.IndexOf("@"));
+
+                    var authorOfLastMsg = await UserManager.FindByIdAsync(chat.Messages.OrderByDescending(m => m.DateOfSending).Select(m => m.SendByUserId).FirstOrDefault());
+                    chat.Messages.OrderByDescending(m=>m.DateOfSending).FirstOrDefault().UsernameOfSender = authorOfLastMsg.UserName.Remove(authorOfLastMsg.UserName.IndexOf("@"));
                 }
             }
 

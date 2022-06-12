@@ -15,13 +15,25 @@
 		{
 			@foreach (var chat in Model.Chats)
 			{
-		  <div class="row" style="border:1px solid green; padding:10px 10px; margin-left:20px">
+		  <div class="row" style="border:1px solid green; padding:10px 10px; margin-left:20px; width: 330px;">
 		   <div class="col align-self-center">
 			<img src="/images/@chat.AdId/@chat.Ad.Images.SingleOrDefault().Name" class="rounded chatImage" alt="@chat.Ad.Images.SingleOrDefault().Name" />
-
+			<br />
 			<a asp-page="/Ads/Details" asp-route-link="@chat.Ad.NormalizedLink">
 			 <h6>@chat.Ad.Title</h6>
 			</a>
+			Konwersacja z użytkownikiem: 
+			<br />
+			@if (chat.CreatedByUserId == Model.currentUserId)
+						{
+							@chat.AdOwnerUsername
+						}
+						else
+						{
+							@chat.UsernameOfCreator
+						}
+			@* check status of last msg to blink text block *@
+			<br />
 			@if(@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.SendByUserId).FirstOrDefault() != Model.currentUserId)
 			{
 				<b class="@((int)chat.Messages.OrderByDescending(m => m.DateOfSending).Select(m => m.Status).FirstOrDefault() == 1 ? "UnreadMessage" : "")">Ostatnia wiadomość z</b>
@@ -35,9 +47,10 @@
 			<br />
 
 			<p style="margin-bottom:0">
-							<strong>@chat.UsernameOfCreator:</strong>
+							<strong>@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.UsernameOfSender).FirstOrDefault():</strong>
 							@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.TextMessage.Substring(0,Math.Min(20,m.TextMessage.Length))+ "...").FirstOrDefault()
 			</p>
+			<br />
 						@if (chat.CreatedByUserId == Model.currentUserId)
 						{
 							<form asp-page-handler="delete" asp-route-id="@chat.Id" method="post">

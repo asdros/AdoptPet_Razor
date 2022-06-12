@@ -197,5 +197,7 @@ span.carousel-control-prev-icon {
 }
 
 .chatImage {
-    max-height:75px;
+    max-height: 75px;
+    display: block;
+    margin: auto;
 }

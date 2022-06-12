@@ -13,6 +13,9 @@ namespace Entities.Models.Conversation
         [NotMapped]
         public string UsernameOfCreator { get; set; }
 
+        [NotMapped]
+        public string AdOwnerUsername { get; set; }
+
         [ForeignKey(nameof(Ad))]
         public Guid AdId { get; set; }
         public virtual Ad Ad { get; set; }

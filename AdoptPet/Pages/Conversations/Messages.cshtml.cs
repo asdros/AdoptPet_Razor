@@ -120,7 +120,7 @@ namespace AdoptPet.Pages.Conversations
             currentUserId = UserManager.GetUserId(User);
             var lastMsg = chat.Messages.OrderByDescending(m => m.DateOfSending).FirstOrDefault();
 
-            var lastMsgFromDb = _context.Message.Where(m => m.Id.Equals(lastMsg.Id));
+            var lastMsgFromDb = _context.Message.Where(m => m.Id.Equals(lastMsg.Id)).FirstOrDefault();
 
             if (lastMsgFromDb == null)
             {
