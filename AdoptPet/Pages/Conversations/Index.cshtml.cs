@@ -47,8 +47,14 @@ namespace AdoptPet.Pages.Conversations
 
             if (Chats.Any())
             {
-                foreach (var chat in Chats)
+                foreach (var chat in Chats.ToList())
                 {
+                    if (!chat.Messages.Any() && chat.CreatedByUserId!=currentUserId)
+                    {
+                        Chats.Remove(chat);
+                        continue;
+                    }
+
                     var user = await UserManager.FindByIdAsync(chat.CreatedByUserId);
                     chat.UsernameOfCreator = user.UserName.Remove(user.UserName.IndexOf("@"));
 
@@ -56,7 +62,10 @@ namespace AdoptPet.Pages.Conversations
                     chat.AdOwnerUsername = AdOwnerUsername.UserName.Remove(AdOwnerUsername.UserName.IndexOf("@"));
 
                     var authorOfLastMsg = await UserManager.FindByIdAsync(chat.Messages.OrderByDescending(m => m.DateOfSending).Select(m => m.SendByUserId).FirstOrDefault());
-                    chat.Messages.OrderByDescending(m=>m.DateOfSending).FirstOrDefault().UsernameOfSender = authorOfLastMsg.UserName.Remove(authorOfLastMsg.UserName.IndexOf("@"));
+                    if (authorOfLastMsg != null)
+                    {
+                        chat.Messages.OrderByDescending(m => m.DateOfSending).FirstOrDefault().UsernameOfSender = authorOfLastMsg.UserName.Remove(authorOfLastMsg.UserName.IndexOf("@"));
+                    }
                 }
             }
 

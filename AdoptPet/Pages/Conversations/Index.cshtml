@@ -1,4 +1,5 @@
 ﻿@page
+@using Entities.Models.Conversation
 @model AdoptPet.Pages.Conversations.IndexModel
 
 @{
@@ -34,9 +35,12 @@
 						}
 			@* check status of last msg to blink text block *@
 			<br />
-			@if(@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.SendByUserId).FirstOrDefault() != Model.currentUserId)
+			@if(chat.Messages.Any())
 			{
-				<b class="@((int)chat.Messages.OrderByDescending(m => m.DateOfSending).Select(m => m.Status).FirstOrDefault() == 1 ? "UnreadMessage" : "")">Ostatnia wiadomość z</b>
+			@if(chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.SendByUserId).FirstOrDefault() != Model.currentUserId)
+			{
+					<b class="@(chat.Messages.OrderByDescending(m => m.DateOfSending).Select(m => m.Status).FirstOrDefault() == Message.ChatStatus.Nieodczytane ? "UnreadMessage" : "")">Ostatnia wiadomość z</b>
+
 			}
 			else
 			{
@@ -50,6 +54,7 @@
 							<strong>@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.UsernameOfSender).FirstOrDefault():</strong>
 							@chat.Messages.OrderByDescending(m=>m.DateOfSending).Select(m=>m.TextMessage.Substring(0,Math.Min(20,m.TextMessage.Length))+ "...").FirstOrDefault()
 			</p>
+			}
 			<br />
 						@if (chat.CreatedByUserId == Model.currentUserId)
 						{
@@ -67,9 +72,3 @@
 		}
  </div>
 </div>
-
-<script>
-    $(document).ready(function () {
-		blinkText();
-    });
-</script>

@@ -1,3 +1,39 @@
-﻿@model AdoptPet.Pages.Shared._MessagesPartialModel
+﻿@using System.Linq
+@using Entities.Models.Conversation
+@using Microsoft.EntityFrameworkCore
+@inject UserManager<IdentityUser> UserManager
+@inject ApplicationDbContext Context
 
-<a class="nav-link text-dark" asp-area="" asp-page="/Conversations/Index">Wiadomości</a>
+
+@{
+	var currentUserId = UserManager.GetUserId(User);
+	
+	// result is a number of unreaded messages from 
+	var chats =  Context.Chat.Where(c => c.CreatedByUserId.Equals(currentUserId) || c.Ad.OwnerId.Equals(currentUserId))
+										.SelectMany(x => x.Messages)
+										.Count(z => z.SendByUserId!=currentUserId && z.Status == Message.ChatStatus.Nieodczytane);
+	var chatsWithUnreadedMessages = chats;
+
+	var NumberOfUnreadedMessages = chatsWithUnreadedMessages;
+}
+
+<a class="nav-link text-dark" asp-area="" asp-page="/Conversations/Index">Wiadomości
+@if(NumberOfUnreadedMessages==1)
+	{
+		<span class="UnreadMessage">
+			Nieodczytana: @NumberOfUnreadedMessages
+		</span>
+	}
+	else if(NumberOfUnreadedMessages>=2)
+	{
+		<span class="UnreadMessage">
+			Nieodczytane: @NumberOfUnreadedMessages
+		</span>
+	}
+</a>
+
+<script>
+    $(document).ready(function () {
+		blinkText();
+    });
+</script>

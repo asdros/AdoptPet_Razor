@@ -112,7 +112,7 @@ namespace AdoptPet.Pages.Conversations
             if (chat == null)
             {
                 _notyfService.Error("B³¹d w przetwarzaniu danych");
-                return RedirectToPage("./Conversations/Index");
+                return RedirectToPage("/Conversations/Index");
             }
 
             // change the status of the last message to just read
@@ -120,19 +120,22 @@ namespace AdoptPet.Pages.Conversations
             currentUserId = UserManager.GetUserId(User);
             var lastMsg = chat.Messages.OrderByDescending(m => m.DateOfSending).FirstOrDefault();
 
-            var lastMsgFromDb = _context.Message.Where(m => m.Id.Equals(lastMsg.Id)).FirstOrDefault();
-
-            if (lastMsgFromDb == null)
+            if (lastMsg != null && lastMsg.SendByUserId != currentUserId)
             {
-                _notyfService.Error("B³¹d w przetwarzaniu danych");
-                return RedirectToPage("./Conversations/Index");
-            }
+                var lastMsgFromDb = _context.Message.Where(m => m.Id.Equals(lastMsg.Id)).FirstOrDefault();
 
-            if (lastMsg.SendByUserId == currentUserId)
-            {
-                lastMsg.Status = Message.ChatStatus.Odczytane;
+                if (lastMsgFromDb == null)
+                {
+                    _notyfService.Error("B³¹d w przetwarzaniu danych");
+                    return RedirectToPage("./Conversations/Index");
+                }
 
-                _context.Entry(lastMsgFromDb).CurrentValues.SetValues(lastMsg);
+                if (lastMsg.SendByUserId == currentUserId)
+                {
+                    lastMsg.Status = Message.ChatStatus.Odczytane;
+
+                    _context.Entry(lastMsgFromDb).CurrentValues.SetValues(lastMsg);
+                }
             }
 
             //add a new message
