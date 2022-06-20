@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
@@ -8,5 +9,7 @@ namespace Entities.Models
         public int Id { get; set; }
 
         public string Species { get; set; }
+
+        public virtual ICollection<Breed> Breeds { get; set; }
     }
 }

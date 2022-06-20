@@ -1,0 +1,29 @@
+﻿@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext Context
+
+@{
+	var animals = await Context.Animal
+	.Include(a=>a.Breeds.OrderBy(b=>b.Name)) //sorting by breed name and species
+    .OrderBy(a=>a.Species)
+	.ToListAsync();
+}
+
+<div>
+	<ul class="dropdown">
+        <li><a class="nav-link text-dark" href="#">Kategorie</a>
+            <ul>
+                @foreach(var animal in animals)
+                {
+                <li><a href="#">@animal.Species</a>
+                    <ul>
+                        @foreach(var breed in animal.Breeds)
+                        {
+                        <li><a href="#">@breed.Name</a></li>
+                        }
+                    </ul>
+                </li>
+                }
+            </ul>
+        </li>
+    </ul>
+</div>

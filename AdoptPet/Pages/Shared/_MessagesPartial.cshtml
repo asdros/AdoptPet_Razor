@@ -12,9 +12,8 @@
 	var chats =  Context.Chat.Where(c => c.CreatedByUserId.Equals(currentUserId) || c.Ad.OwnerId.Equals(currentUserId))
 										.SelectMany(x => x.Messages)
 										.Count(z => z.SendByUserId!=currentUserId && z.Status == Message.ChatStatus.Nieodczytane);
-	var chatsWithUnreadedMessages = chats;
 
-	var NumberOfUnreadedMessages = chatsWithUnreadedMessages;
+	var NumberOfUnreadedMessages = chats;
 }
 
 <a class="nav-link text-dark" asp-area="" asp-page="/Conversations/Index">Wiadomości
