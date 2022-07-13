@@ -50,9 +50,10 @@ function breedsDropDownList() {
             url: '/Ads/GetBreeds',
             contentType: 'application/json; charset=utf-8',
             data: { "animalIdVal": id },
-            success: function (json, textStatus) {
+            success: function (json) {
                 $("#breedId").empty();
                 json = json || {};
+                $("#breedId").append('<option id="breedAd" value="null">' + '-- Wybierz rasę --' + '</option>');
                 for (var i = 0; i < json.length; i++) {
                         $("#breedId").append('<option id="breedAd" value="' + json[i].id + '">' + json[i].name + '</option>');
                 }
@@ -107,5 +108,22 @@ function blinkText() {
         setInterval(function () {
             unreadMsg.style.color = (unreadMsg.style.color == 'red' ? 'black' : 'red');
         }, 1000);
+    }
+};
+
+function collasibleSearchBox() {
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
     }
 };

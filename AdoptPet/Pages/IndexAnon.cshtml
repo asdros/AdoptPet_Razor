@@ -5,11 +5,61 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Witaj</h1>
+    <button class="collapsible">Wyszukiwarka</button>
+    <div class="container content">
+        <br />
+        <h5>Wszystkie pola (poza informacją o gatunku w przypadku wyboru rasy) są opcjonalne.</h5>
+        <form asp-page="/IndexAnon" method="get">
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-5">
+                        <label class="control-label search-field">Nazwa ogłoszenia:</label><br />
+                        <input type="text" class="form-control" name="titleFilter" />
+                        <label class="control-label search-field">Gatunek:</label>
+                        <select id="animalId" name="animalFilter" class="form-control" asp-items="(IEnumerable<SelectListItem>)@ViewData["AnimalId"]">
+                            <option value="null">-- Wybierz gatunek --</option>
+                        </select>
+                        <label class="control-label search-field">Rasa:</label>
+                        <select id="breedId" name="breedFilter" class="form-control" ></select> 
+                        <label class="control-label search-field">Płeć:</label>
+                        <select class="form-control" name="genderAnimalFilter" asp-items="(IEnumerable<SelectListItem>)@ViewData["GenderAnimal"]">
+                            <option value="null">-- Wybierz płeć --</option>
+                        </select>                 
+                    </div>
+                    <div class="col-sm-5">
+                        <label class="control-label search-field">Województwo:</label>
+                        <select name="provinceFilter" class="form-control" asp-items="(IEnumerable<SelectListItem>)@ViewData["ProvinceId"]">
+                            <option value="">-- Wybierz województwo --</option>
+                        </select>
+                        <label class="control-label search-field">Powiat:</label>
+                        <input type="text" class="form-control" name="districtFilter"/>
+                        <label class="control-label search-field">Miejscowość:</label>
+                        <input type="text" class="form-control" id="placeName" name="placeFilter"/>
+                        <label class="control-label search-field">Sterylizacja:</label>
+                        <div class="row justify-content-center">
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">                             
+                              <label class="btn btn-info mr-3">
+                                <input type="radio" name="sterilizationFilter" value="true" autocomplete="off"> Tak
+                              </label>
+                              <label class="btn btn-info">
+                                <input type="radio" name="sterilizationFilter" value="false" autocomplete="off"> Nie
+                              </label>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="col-sm-1"></div>
+                </div>   
+
+                    <br />
+                    <input type="submit" value="Wyszukaj" class="btn btn-primary" /> 
+            </div>
+        </form>
+    </div>
 </div>
 
 
-    <div class="container ">
+    <div class="container">
         <div class="row justify-content-center">
             @foreach(var item in Model.ApprovedAds)
     {
@@ -28,3 +78,16 @@
     }
     </div>
     </div>
+
+<script>
+   $(document).ready(function () {
+        breedsDropDownList();
+        collasibleSearchBox();
+        autocompletePlaceInput();
+       
+        //conversion of empty values to correctly interpreted by the filter method
+        if ($_GET['value'] === '') {
+        $_GET['value'] = null;
+}
+ });
+</script>

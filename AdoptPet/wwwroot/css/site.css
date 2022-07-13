@@ -256,3 +256,34 @@ span.carousel-control-prev-icon {
 ul li:hover > ul {
     display: block;
 }
+
+.collapsible {
+    background-color: #95e7f7;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: center;
+    outline: none;
+    font-size: 25px;
+}
+
+.active, .collapsible:hover {
+    background-color: #6398a2;
+}
+
+.content {
+    padding: 0px 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
+}
+
+.search-field{
+    margin-top: 20px;
+}
+
+.container .btn {
+    margin-bottom:20px;
+}
