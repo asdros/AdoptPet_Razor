@@ -9,7 +9,7 @@
     <div class="container content">
         <br />
         <h5>Wszystkie pola (poza informacją o gatunku w przypadku wyboru rasy) są opcjonalne.</h5>
-        <form asp-page="/IndexAnon" method="get">
+        <form asp-page="/IndexAnon" method="get" id="searchForm">
             <div class="form-actions">
                 <div class="row">
                     <div class="col-sm-1"></div>
@@ -18,13 +18,13 @@
                         <input type="text" class="form-control" name="titleFilter" />
                         <label class="control-label search-field">Gatunek:</label>
                         <select id="animalId" name="animalFilter" class="form-control" asp-items="(IEnumerable<SelectListItem>)@ViewData["AnimalId"]">
-                            <option value="null">-- Wybierz gatunek --</option>
+                            <option value="">-- Wybierz gatunek --</option>
                         </select>
                         <label class="control-label search-field">Rasa:</label>
                         <select id="breedId" name="breedFilter" class="form-control" ></select> 
                         <label class="control-label search-field">Płeć:</label>
                         <select class="form-control" name="genderAnimalFilter" asp-items="(IEnumerable<SelectListItem>)@ViewData["GenderAnimal"]">
-                            <option value="null">-- Wybierz płeć --</option>
+                            <option value="">-- Wybierz płeć --</option>
                         </select>                 
                     </div>
                     <div class="col-sm-5">
@@ -52,7 +52,7 @@
                 </div>   
 
                     <br />
-                    <input type="submit" value="Wyszukaj" class="btn btn-primary" /> 
+                    <input type="submit" value="Wyszukaj" class="btn btn-primary"/> 
             </div>
         </form>
     </div>
@@ -84,10 +84,12 @@
         breedsDropDownList();
         collasibleSearchBox();
         autocompletePlaceInput();
-       
+        removeEmptyFieldsFromForm();   
+     
+        
         //conversion of empty values to correctly interpreted by the filter method
-        if ($_GET['value'] === '') {
-        $_GET['value'] = null;
-}
+      //  if ($_GET['value'] === '') {
+     //   $_GET['value'] = null;
+//      }
  });
 </script>

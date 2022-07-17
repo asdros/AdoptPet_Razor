@@ -30,7 +30,7 @@ namespace AdoptPet.Pages
             _context = context;
         }
 
-        public async Task OnGetAsync(string titleFilter, bool? sterilizationFilter, int? animalFilter, int? breedFilter, string provinceFilter, string districtFilter, string placeFilter, Gender? genderAnimalFilter)
+        public async Task OnGetAsync(string titleFilter, bool? sterilizationFilter, int? animalFilter, int? breedFilter, int? provinceFilter, string districtFilter, string placeFilter, Gender? genderAnimalFilter)
         {
             //data for dropdown lists
             ViewData["AnimalId"] = new SelectList(_context.Animal, "Id", "Species");
@@ -58,7 +58,7 @@ namespace AdoptPet.Pages
                 .Where(a => (sterilizationFilter != null && a.Sterilization == sterilizationFilter) || (sterilizationFilter == null))
                 .Where(a => (animalFilter != null && a.Breed.Animal.Id == animalFilter) || (animalFilter == null))
                 .Where(a => (breedFilter != null && a.Breed.Id == breedFilter) || (breedFilter == null))
-                .Where(a => (provinceFilter != null && a.Place.District.Province.Name.ToLower() == provinceFilter.ToLower()) || (provinceFilter == null))
+                .Where(a => (provinceFilter != null && a.Place.District.Province.Id == provinceFilter) || (provinceFilter == null))
                 .Where(a => (placeFilter != null && a.Place.Name.ToLower().StartsWith(placeFilter.ToLower())) || (placeFilter == null))
                 .Where(a => (districtFilter != null && a.Place.District.Name == districtFilter) || (districtFilter == null))
                 .Where(a => (genderAnimalFilter != null && a.GenderAnimal == genderAnimalFilter) || (genderAnimalFilter == null))
