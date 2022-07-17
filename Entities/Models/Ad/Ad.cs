@@ -65,10 +65,10 @@ namespace Entities.Models
         public string OwnerId { get; set; }
 
         [Required(ErrorMessage = "Wiek zwierzęcia jest wymagany")]
-        [Range(0, 360, ErrorMessage = "Maksymalny wiek zwierzęcia to 30 lat")]
+        [Range(0, 360, ErrorMessage = "Maksymalny wiek zwierzęcia to 30 lat (360 miesięcy).")]
         public byte AgeAnimal { get; set; }
 
-        [Required(ErrorMessage = "Płeć zwierzęcia jest wymagana")]
+        [Required(ErrorMessage = "Płeć zwierzęcia jest wymagana.")]
         public Gender GenderAnimal { get; set; }
 
         [Required(ErrorMessage = "Rasa zwierzęcia jest wymagana.")]
