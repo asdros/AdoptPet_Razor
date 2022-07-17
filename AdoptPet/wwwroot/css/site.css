@@ -35,8 +35,7 @@ div.posterImage {
 }
 
 #myImg {
-    width:auto;
-    height:360px;
+    width: 100% !important;
 }
 
 #imgMainSite {
@@ -156,7 +155,8 @@ span.carousel-control-prev-icon {
 }
 
 .thumb-image {
-    width: 200px;
+    height: 200px;
+    width: auto;
     position: relative;
     padding: 5px;
     border-radius: 5%;

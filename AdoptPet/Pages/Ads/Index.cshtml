@@ -57,7 +57,7 @@
                 @if((await AuthorizationService.AuthorizeAsync(User,item, UserOperations.Delete)).Succeeded)
                 {
                     <text>&nbsp;|&nbsp;</text>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="@tm">Usuń</button>  
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="@tm" @if(item.Status == AdStatus.Zatwierdzone){<text>disabled</text>}>Usuń</button>  
                 }
                  </div>
                 <div class="modal fade" id="@mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="true">

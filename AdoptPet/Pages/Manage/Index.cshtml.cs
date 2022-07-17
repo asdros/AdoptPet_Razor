@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AdoptPet.Areas.Authorization;
 using AdoptPet.Data;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
@@ -41,6 +42,13 @@ namespace AdoptPet.Pages.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
+            var isAuthorized = User.IsInRole(Constants.AdministratorsRole);
+
+            if(!isAuthorized)
+            {
+                return Forbid();
+            }
+
             Animals = await _context.Animal.ToListAsync();
 
             var breedsFromDB = await _context.Breed.ToListAsync();

@@ -38,6 +38,7 @@ function validateImages() {
         inp.focus();
         return false;
     }
+    return true;
 };
 
 function countUploadedImages() {
@@ -47,6 +48,7 @@ function countUploadedImages() {
         inp.focus();
         return false;
     }
+    return true;
 };
 
 function breedsDropDownList() {
