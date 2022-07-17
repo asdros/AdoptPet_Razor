@@ -35,6 +35,11 @@ div.posterImage {
 }
 
 #myImg {
+    width:auto;
+    height:360px;
+}
+
+#imgMainSite {
     max-width: 90%;
     max-height: 360px;
 }
@@ -286,4 +291,8 @@ ul li:hover > ul {
 
 .container .btn {
     margin-bottom:20px;
+}
+
+.detailsTopMargin {
+    margin-top: 20px;
 }

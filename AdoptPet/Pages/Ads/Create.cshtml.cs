@@ -13,6 +13,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using AdoptPet.Areas.Authorization;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace AdoptPet.Pages.Ads
 {
@@ -22,14 +23,17 @@ namespace AdoptPet.Pages.Ads
         private readonly ILoggerManager _loggerManager;
         private readonly IImageService _imageService;
         private readonly IMapper _mapper;
+        private readonly INotyfService _notyfService;
 
-        public CreateModel(ApplicationDbContext context, IAuthorizationService authorizationService, UserManager<IdentityUser> userManager, ILoggerManager loggerManager, IImageService imageService, IMapper mapper)
+        public CreateModel(ApplicationDbContext context, IAuthorizationService authorizationService, UserManager<IdentityUser> userManager, ILoggerManager loggerManager, IImageService imageService, IMapper mapper,
+            INotyfService notyfService)
             : base(context, authorizationService, userManager)
         {
             _context = context;
             _loggerManager = loggerManager;
             _imageService = imageService;
             _mapper = mapper;
+            _notyfService = notyfService;
         }
 
         public IActionResult OnGet()
@@ -92,6 +96,7 @@ namespace AdoptPet.Pages.Ads
 
             await _context.SaveChangesAsync();
 
+            _notyfService.Success("Poprawnie dodano ogłoszenie do listy oczekujących.");
             return RedirectToPage("./Index");
         }
     }

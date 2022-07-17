@@ -40,6 +40,15 @@ function validateImages() {
     }
 };
 
+function countUploadedImages() {
+    var inp = document.getElementById('imageUpload');
+    if (inp.files.length > 6) {
+        alert("Maksymalna ilość zdjęć wynosi 6");
+        inp.focus();
+        return false;
+    }
+};
+
 function breedsDropDownList() {
     $("#breedId").prop("disabled", true);
     $("#animalId").change(function () {

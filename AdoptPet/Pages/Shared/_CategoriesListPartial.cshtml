@@ -14,11 +14,11 @@
             <ul>
                 @foreach(var animal in animals)
                 {
-                <li><a href="#">@animal.Species</a>
+                <li><a href="/IndexAnon?animalFilter=@animal.Id">@animal.Species</a>
                     <ul>
                         @foreach(var breed in animal.Breeds)
                         {
-                        <li><a href="#">@breed.Name</a></li>
+                        <li><a href="/IndexAnon?animalFilter=@animal.Id&breedFilter=@breed.Id">@breed.Name</a></li>
                         }
                     </ul>
                 </li>

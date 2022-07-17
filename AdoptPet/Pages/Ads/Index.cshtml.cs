@@ -36,7 +36,8 @@ namespace AdoptPet.Pages.Ads
             var ads = await _context.Ad
                 .Include(a => a.Breed)
                 .Include(a => a.Place)
-                .OrderBy(a => a.AvailableFrom)
+                .OrderByDescending(a => a.AvailableFrom)
+                .OrderBy(a => a.Status)
                 .ToListAsync();
 
             var isAuthorized = User.IsInRole(Constants.ManagersRole) ||

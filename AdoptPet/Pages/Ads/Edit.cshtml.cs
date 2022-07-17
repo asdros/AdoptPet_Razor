@@ -69,7 +69,7 @@ namespace AdoptPet.Pages.Ads
                 return Forbid();
             }
 
-            Images = await _context.Image.Where(i => i.AdId.Equals(id) && i.isPoster.Equals(false))
+            Images = await _context.Image.Where(i => i.AdId.Equals(id))
                                                     .OrderBy(i => i.isPoster)
                                                     .ToListAsync();
 

@@ -8,96 +8,138 @@
 <h1>Edytuj ogłoszenie</h1>
 <a asp-page="./Index">Wróć do strony głównej</a>
 <hr />
-<div class="row">
- <div class="row justify-content-center">
-		@foreach (var image in Model.Images)
-		{
-	  <div class="col-md-4 offset-sm-2">
-	   <img src="/images/@Model.AdFromDB.Id/@image.Name" class="edit-thumb-image" alt="@image.Name" />
+<div class="container">
+		<div class="row justify-content-center">
+			@foreach (var image in Model.Images)
+			{
+				<div class="col-md-4 offset-sm-2">
+					<img src="/images/@Model.AdFromDB.Id/@image.Name" class="edit-thumb-image" alt="@image.Name" />
+					@if (!image.isPoster)
+					{
+						<form method="post" asp-page-handler="DeleteImage">
+							<button class="btn btn-danger btn-sm" id="imdDelBtn">Usuń</button>
+							<input type="hidden" name="id" value="@image.Id" />
+						</form>
+					}
+				</div>
+			}
+		</div>
+		<br />
+	<div class="container">
+		<form method="post" enctype="multipart/form-data" onsubmit="return(countUploadedImages());">
+			<div class="row detailsTopMargin">
+				<div class="col-md-1"></div>
+				<div class="col-md-5">
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<input type="hidden" asp-for="Ad.Id" />
+					<div class="form-group">
+						<label asp-for="Ad.Title" class="control-label">
+							Tytuł
+						</label>
+						<input asp-for="Ad.Title" class="form-control" />
+						<span asp-validation-for="Ad.Title" class="text-danger"></span>
+					</div>					
+				</div>
+				<div class="col-md-5">
+					<div class="form-group">
+						<label asp-for="Ad.BreedId" class="control-label">
+							Rasa
+						</label>
+						<select asp-for="Ad.BreedId" class="form-control" asp-items="ViewBag.BreedId"></select>
+						<span asp-validation-for="Ad.BreedId" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-1"></div>
+			</div>
+		    <div class="row detailsTopMargin">
+				<div class="col-md-1"></div>
+				<div class="col-md-5">
+					<div class="form-group">
+						<label asp-for="Ad.AgeAnimal" class="control-label">
+							Wiek zwierzęcia wyrażony w miesiącach
+						</label>
+						<input asp-for="Ad.AgeAnimal" class="form-control" min="0" step="1" placeholder="@Model.Ad.AgeAnimal" />
+						<span asp-validation-for="Ad.AgeAnimal" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-md-5">
+					<div class="form-group">
+						<label asp-for="Ad.GenderAnimal" class="control-label">
+							Płeć zwierzęcia
+						</label>
+						@Html.DropDownListFor(Model=>Model.Ad.GenderAnimal, new SelectList(Enum.GetValues(typeof(Gender))), new{@class="form-control"})
+					</div>
+				</div>
+				<div class="col-md-1"></div>
+			</div>
+			<div class="row detailsTopMargin">
+				<div class="col-md-1"></div>
+				<div class="col-md-5">
+					<div class="form-group">
+						<label asp-for="Ad.PlaceId" class="control-label">
+							Miejscowość
+						</label>
+						<input type="text" id="placeName" class="form-control" placeholder="@Model.PlaceToView.FullPlaceName">
+						<span asp-validation-for="Ad.PlaceId" class="text-danger"></span>
+						@Html.TextBoxFor(Model => Model.Ad.PlaceId, new { id="hiddenPlaceId" ,style ="visibility:hidden"})
+					</div>
+				</div>
+				<div class="col-md-5">
 
-	   <form method="post" asp-page-handler="DeleteImage">
-		<button class="btn btn-danger btn-sm" id="imdDelBtn">Usuń</button>
-		<input type="hidden" name="id" value="@image.Id" />
-	   </form>
-	  </div>
-		}
- </div>
-</div>
-  <div class="row">
- <form method="post" enctype="multipart/form-data">
-  <div class="row">
-   <div class="col-md-6">
-	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-	<input type="hidden" asp-for="Ad.Id" />
-	<div class="form-group">
-	 <label asp-for="Ad.Title" class="control-label">Tytuł</label>
-	 <input asp-for="Ad.Title" class="form-control" />
-	 <span asp-validation-for="Ad.Title" class="text-danger"></span>
+				</div>
+				<div class="col-md-1"></div>
+			</div>
+			<div class="row detailsTopMargin">
+				<div class="col-md-1"></div>
+				<div class="col-md-10">
+					<div class="form-group">
+						<label asp-for="Ad.Description" class="control-label">
+							Opis
+						</label>
+						<textarea asp-for="Ad.Description" class="form-control" cols="100" rows="5"></textarea>
+						<span asp-validation-for="Ad.Description" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+			<div class="row detailsTopMargin">
+				<div class="col-md-1"></div>
+				<div class="col-md-3">
+					<div class="btn-group btn-group-toggle" data-toggle="buttons">
+						<div class="form-group form-check" style="padding-left: 0px;">
+							<label class="btn btn-success">
+								<input type="checkbox" asp-for="Ad.Sterilization" autocomplete="off"> Sterylizacja
+							</label>
+						</div>
+						<div class="form-group form-check">
+							<label class="btn btn-success">
+								<input type="checkbox" asp-for="Ad.Deworming" autocomplete="off"> Odrobaczenie
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3"></div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="control-label">
+							Zdjęcia
+						</label>
+						<input id="imageUpload" type="file" asp-for="ImagesFromForm" accept=".jpg, .jpeg, .png" multiple />
+					</div>                 
+				</div>  
+				<div class="col-md-1"></div>	
+			</div>
+			<div class="row justify-content-center" id="image-holder">
+			</div>
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-3">            
+					<div class="form-group">
+						<input type="submit" value="Zapisz edycję" class="btn btn-primary" />
+					</div>
+				</div>
+			</div>	
+		</form>
 	</div>
-   </div>
-  </div>
-  <div class="row">
-   <div class="col-md-8">
-	<div class="form-group">
-	 <label asp-for="Ad.Description" class="control-label">Opis</label>
-	 <textarea asp-for="Ad.Description" class="form-control" cols="100" rows="10"></textarea>
-	 <span asp-validation-for="Ad.Description" class="text-danger"></span>
-	</div>
-   </div>
-  </div>
-  <div class="col-md-4">
-   <div class="form-group form-check">
-	<label class="form-check-label">
-	 <input class="form-check-input" asp-for="Ad.Sterilization" />Sterylizacja
-	</label>
-   </div>
-   <div class="form-group form-check">
-	<label class="form-check-label">
-	 <input class="form-check-input" asp-for="Ad.Deworming" />Odrobaczenie
-	</label>
-   </div>
-   <div class="row">
-	   <div class="col align-self-start">
-		<div class="form-group">
-			<label asp-for="Ad.AgeAnimal" class="control-label">Wiek zwierzęcia wyrażony w miesiącach</label>
-			<input asp-for="Ad.AgeAnimal" class="form-control" min="0" step="1" placeholder="@Model.Ad.AgeAnimal" />
-			<span asp-validation-for="Ad.AgeAnimal" class="text-danger"></span>
-		</div>
-		<div class="form-group">
-			<label asp-for="Ad.GenderAnimal" class="control-label">Płeć zwierzęcia</label>
-			@Html.DropDownListFor(Model=>Model.Ad.GenderAnimal, new SelectList(Enum.GetValues(typeof(Gender))), new{@class="form-control"})
-		</div>
-	</div>
-   </div>
-   <div class="row">
-	<div class="col align-self-start">
-	 <div class="form-group">
-	  <label asp-for="Ad.BreedId" class="control-label">Rasa</label>
-	  <select asp-for="Ad.BreedId" class="form-control" asp-items="ViewBag.BreedId"></select>
-	  <span asp-validation-for="Ad.BreedId" class="text-danger"></span>
-	 </div>
-	 <div class="form-group">
-	  <label asp-for="Ad.PlaceId" class="control-label">Miejscowość</label>
-	  <input type="text" id="placeName" class="form-control"
-							   placeholder="@Model.PlaceToView.FullPlaceName">
-	  <span asp-validation-for="Ad.PlaceId" class="text-danger"></span>
-						@Html.TextBoxFor(Model => Model.Ad.PlaceId, new { id="hiddenPlaceId" ,style =
-						"visibility:hidden"})
-	 </div>
-	</div>
-   </div>
-  </div>
-          <div class="col-md-4">
-            <label class="control-label">Zdjęcia</label>
-            <input id="imageUpload" type="file" asp-for="ImagesFromForm" accept=".jpg, .jpeg, .png" multiple />
-            <br /><br />
-        </div>
-        <div class="row justify-content-center" id="image-holder">
-        </div>
-  <div class="form-group">
-   <input type="submit" value="Zapisz zmiany" class="btn btn-primary" />
-  </div>
- </form>
 </div>
 
 <script>
@@ -105,7 +147,7 @@
   autocompletePlaceInput();
   imagePreview();
  });
-
+countUploadedImages();
 </script>
 
 @section Scripts {

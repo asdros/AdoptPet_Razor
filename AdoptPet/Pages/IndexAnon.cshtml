@@ -67,7 +67,7 @@
             <div class="posterImage">
                 <div class="row justify-content-center">
                               <a asp-page="./Ads/Details" asp-route-link="@item.NormalizedLink">
-                <img src="/images/@item.Id/@item.Images.SingleOrDefault().Name" id="myImg" alt="@item.Images.SingleOrDefault().Name"/>
+                <img src="/images/@item.Id/@item.Images.SingleOrDefault().Name" id="imgMainSite" alt="@item.Images.SingleOrDefault().Name"/>
                 </a>
                 </div>
                 <span style="text-align:center">@item.Title <br />@item.Breed.Animal.Species, @item.Breed.Name<br /></span>

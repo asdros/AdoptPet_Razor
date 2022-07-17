@@ -2,165 +2,179 @@
 @model AdoptPet.Pages.Ads.DetailsModel
 
 @{
-	ViewData["Title"] = "Details";
+	ViewData["Title"] = "Szczegóły";
 }
 
-<h1>Szczegóły</h1>
-
-<div>
- <dl class="row">
-  <dd class="col-sm-6">
-   <h4>@Html.DisplayFor(model => model.Ad.Title)</h4>
-  </dd>
-  <dd class="col-sm-2">
-   <label>
-				@Html.DisplayFor(model => model.Ad.AvailableFrom)
-   </label>
-   <label>
-			@if(Model.Owner.PhoneNumber==null)
-			{
-				<text>Brak numeru telefonu</text>			
-			}
-			else if (User.Identity.IsAuthenticated)
-			{
-				<text>Nr tel.</text>@Html.DisplayFor(model=>model.Owner.PhoneNumber)
-			}
-			else
-			{
-				<text>Zaloguj się aby wyświetlić numer telefonu</text>
-			}
-   </label>
-  </dd>
-  <dd class="col-sm-1">
-			@Html.DisplayFor(model=>model.Ad.Status)
-  </dd>
-  <dd class="col-sm-1">
-			@if (Model.Ad.Status != AdStatus.Zatwierdzone)
-			{
-				@if ((await AuthorizationService.AuthorizeAsync(User, Model.Ad, UserOperations.Approve)).Succeeded)
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+			<h4>@Html.DisplayFor(model => model.Ad.Title)</h4>
+		</div>
+        <div class="col-md-3">
+			<label>
+				@if(Model.Owner.PhoneNumber==null)
 				{
-		   <form style="display:inline" method="post">
-			<input type="hidden" name="id" value="@Model.Ad.Id" />
-			<input type="hidden" name="status" value="@AdStatus.Zatwierdzone" />
-			<button type="submit" class="btn btn-sm btn-success">Zatwierdź</button>
-		   </form>
+					<text>Brak numeru telefonu</text>			
 				}
-			}
-
-			@if (Model.Ad.Status != AdStatus.Odrzucone)
-			{
-				@if ((await AuthorizationService.AuthorizeAsync(User, Model.Ad, UserOperations.Reject)).Succeeded)
+				else if (User.Identity.IsAuthenticated)
 				{
-		   <form style="display:inline" method="post">
-			<input type="hidden" name="id" value="@Model.Ad.Id" />
-			<input type="hidden" name="status" value="@AdStatus.Odrzucone" />
-			<button type="submit" class="btn btn-sm btn-danger">Odrzuć</button>
-		   </form>
+					<text>Nr tel. </text>@Html.DisplayFor(model=>model.Owner.PhoneNumber)
 				}
-			}
-  </dd>
-  <dd class="col-sm-2">
-			@if (User.Identity.IsAuthenticated && Model.currentUserId!=Model.Owner.Id && Model.Ad.Status.Equals(AdStatus.Zatwierdzone))
-			{
-				   <form asp-page-handler="AddWatchedItem" asp-route-adId="@Model.Ad.Id" asp-route-currentUserId="@Model.currentUserId" method="post">
-						  <input type="image" class="btn btn-outline-dark" src="/assets/bag-heart.svg" />
-			</form>
+				else
+				{
+					<text>Zaloguj się, aby wyświetlić numer telefonu</text>
+				}
+			</label>
+		</div>
+        <div class="col-md-1">
+			@if ((await AuthorizationService.AuthorizeAsync(User, Model.Ad, UserOperations.Approve)).Succeeded
+				|| ((await AuthorizationService.AuthorizeAsync(User, Model.Ad, UserOperations.Update)).Succeeded))
+					{
+						@Html.DisplayFor(model=>model.Ad.Status)
+					}	
+		</div>
+        <div class="col-md-2">
+			<div class="row">
+				<div class="col-6">
+					@if (Model.Ad.Status != AdStatus.Zatwierdzone)
+					{
+						@if ((await AuthorizationService.AuthorizeAsync(User, Model.Ad, UserOperations.Approve)).Succeeded)
+						{
+							<form style="display:inline" method="post">
+								<input type="hidden" name="id" value="@Model.Ad.Id" />
+								<input type="hidden" name="status" value="@AdStatus.Zatwierdzone" />
+								<button type="submit" class="btn btn-sm btn-success">Zatwierdź</button>
+							</form>
+						}
+					}
+				</div>
+				<div class="col-6">
+					@if (Model.Ad.Status != AdStatus.Odrzucone)
+					{
+						@if ((await AuthorizationService.AuthorizeAsync(User, Model.Ad, UserOperations.Reject)).Succeeded)
+						{
+							<form style="display:inline" method="post">
+							<input type="hidden" name="id" value="@Model.Ad.Id" />
+							<input type="hidden" name="status" value="@AdStatus.Odrzucone" />
+							<button type="submit" class="btn btn-sm btn-danger">Odrzuć</button>
+							</form>
+						}
+					}
+				</div>
+			</div>
+		</div>
+        <div class="col-md-2">
+			<div class="row pr-2"> <!-- test -->
+				@if (User.Identity.IsAuthenticated && Model.currentUserId!=Model.Owner.Id && Model.Ad.Status.Equals(AdStatus.Zatwierdzone))
+				{
+					<form asp-page-handler="AddWatchedItem" asp-route-adId="@Model.Ad.Id" asp-route-currentUserId="@Model.currentUserId" method="post">
+						<input type="image" class="btn btn-outline-dark" src="/assets/bag-heart.svg" />
+					</form>
 					<form asp-page-handler="CreateNewChat" asp-route-adId="@Model.Ad.Id" method="post">
-						  <input type="image" class="btn btn-outline-dark" src="/assets/chat.svg" />
-			</form>
-			}
-  </dd>
- </dl>
- <hr />
- <dl class="row">
-  <dt class="col-sm-1">
-   Opis
-  </dt>
-  <dd class="col-sm-5">
+						<input type="image" class="btn btn-outline-dark" src="/assets/chat.svg" />
+					</form>
+				}
+			</div>
+		</div>		
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+		<label>
+			@Model.Ad.AvailableFrom.ToString("dddd, dd MMMM yyyy, HH:mm")
+		</label>		
+		</div>
+    </div>
+	<hr />
+	 <div class="row">
+		<div class="col-sm-1">
+			<label>
+				<strong>Opis</strong>
+			</label>
+		</div>
+		<div class="col-sm-5">
 			@Html.DisplayFor(model => model.Ad.Description)
-  </dd>
-  <dd class="col-sm-6" style="padding-bottom:30px">
-   <div class="carousel slide" id="gallery" data-interval="5000" data-touch="true" data-ride="carousel">
-	<div class="carousel-inner">
+		</div>
+		<div class="col-sm-6" style="padding-bottom:30px">
+			<div class="carousel slide" id="gallery" data-interval="5000" data-touch="true" data-ride="carousel">
+				<div class="carousel-inner">
 					@foreach (var image in Model.Images)
 					{
-		 <div class="carousel-item @if(Model.Images.First()==image) {<text>active</text>}">
-		  <a class="pop">
-		   <img style="" class="d-block w-100" src="/images/@Model.Ad.Id/@image.Name" id="myImg" alt="@image.Name" />
-		  </a>
-		 </div>
+						<div class="carousel-item @if(Model.Images.First()==image) {<text>active</text>}">
+							<a class="pop">
+								<img style="" class="d-block w-100" src="/images/@Model.Ad.Id/@image.Name" id="myImg" alt="@image.Name" />
+							</a>
+						</div>
 					}
+				</div>
+			
+				<a class="carousel-control-prev" href="#gallery" role="button" data-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="carousel-control-next" href="#gallery" role="button" data-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+			</div>
+		</div>
 	</div>
-	<a class="carousel-control-prev" href="#gallery" role="button" data-slide="prev">
-	 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-	 <span class="sr-only">Previous</span>
-	</a>
-	<a class="carousel-control-next" href="#gallery" role="button" data-slide="next">
-	 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-	 <span class="sr-only">Next</span>
-	</a>
-   </div>
-  </dd>
- </dl>
- <dl class="row">
-
-  <dt class="col-sm-2">
-   Sterylizacja
-  </dt>
-  <dd class="col-sm-2">
-			@Html.DisplayFor(model => model.Ad.Sterilization)
-  </dd>
-  <dt class="col-sm-2">
-   Odrobaczenie
-  </dt>
-  <dd class="col-sm-2">
-			@Html.DisplayFor(model => model.Ad.Deworming)
-  </dd>
-
-  <dt class="col-sm-2">
-   Gatunek, rasa
-  </dt>
-  <dd class="col-sm-2">
-			@Html.DisplayFor(model => model.Ad.Breed.Animal.Species),
-			@Html.DisplayFor(model => model.Ad.Breed.Name)
-  </dd>
-  <dt class="col-sm-3">
-   Wiek w latach
-  </dt>
-  <dd class="col-sm-3">
-			@if (@Model.Ad.AgeAnimal < 12)
-			{
-	   <span>Mniej niż rok</span>
-			}
-			else
-			{
+	<hr />
+	<div class="row detailsTopMargin">
+		<div class="col-md-1"></div>
+        <div class="col-md-2">
+			<strong>Sterylizacja </strong>
+		</div>
+        <div class="col-md-2">
+			@Html.DisplayFor(model => model.Ad.Sterilization)		
+		</div>
+        <div class="col-md-2">
+			<strong>Odrobaczenie </strong>
+		</div>
+		<div class="col-md-2">
+			@Html.DisplayFor(model => model.Ad.Deworming)  
+		</div>
+    </div>	
+    <div class="row detailsTopMargin">
+        <div class="col-md-1"></div>
+			<div class="col-md-2">
+				<strong>Gatunek, rasa </strong>
+			</div>
+			<div class="col-md-2">
+				@Html.DisplayFor(model => model.Ad.Breed.Animal.Species), @Html.DisplayFor(model => model.Ad.Breed.Name)	
+			</div>
+			<div class="col-md-2">
+				<strong>Wiek w latach </strong>
+			</div>
+			<div class="col-md-2">
+				@if (@Model.Ad.AgeAnimal < 12)
+				{
+				<span>Mniej niż rok</span>
+				}
+				else
+				{
 				var monthsToYears = Model.Ad.AgeAnimal / 12;
 				@Html.DisplayFor(model=>monthsToYears)
-			}
-  </dd>
-  <dt class="col-sm-3">
-   Płeć
-  </dt>
-  <dd class="col-sm-3">
-			@Html.DisplayFor(model=>model.Ad.GenderAnimal)
-  </dd>
-  <dt class="col-sm-2">
-   Lokalizacja
-  </dt>
-  <dd class="col-sm-6">
+				} 
+			</div>
+	</div>	
+	<div class="row detailsTopMargin">
+		<div class="col-md-1"></div>
+		<div class="col-md-2">
+			<strong>Płeć </strong>
+		</div>
+       <div class="col-md-2">
+			@Html.DisplayFor(model=>model.Ad.GenderAnimal)		
+		</div>
+        <div class="col-md-2">
+			<strong>Lokalizacja </strong>
+		</div>
+		<div class="col-md-2">
 			@Html.DisplayFor(model => model.Ad.Place.Name), powiat
 			@Html.DisplayFor(model => model.Ad.Place.District.Name),
-			@Html.DisplayFor(model => model.Ad.Place.District.Province.Name),
-  </dd>
- </dl>
- <div>
-		@if ((await AuthorizationService.AuthorizeAsync(User, Model.Ad, UserOperations.Update)).Succeeded)
-		{
-	  <a asp-page="./Edit" asp-route-id="@Model.Ad.Id">Edytuj</a>
-			<text> | </text>
-		}
-  <a asp-page="./Index">Wróć do strony głównej</a>
- </div>
+			@Html.DisplayFor(model => model.Ad.Place.District.Province.Name)
+		</div>
+	</div>	
+	
 </div>
 
 <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

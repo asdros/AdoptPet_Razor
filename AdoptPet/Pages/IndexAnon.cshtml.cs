@@ -43,6 +43,7 @@ namespace AdoptPet.Pages
               .Include(a => a.Place)
               .Include(a => a.Images.Where(i => i.isPoster.Equals(true)))
               .OrderBy(a => a.AvailableFrom)
+              .Take(9)
               .ToListAsync();
 
             //extract the name of the locality from the full location data
