@@ -40,9 +40,9 @@ namespace AdoptPet.Pages
             }
 
             WatchedItems = await _context.WatchedItem
-                .Include("Ad.Images")
+                .Include(w => w.Ad.Images.Where(i => i.isPoster.Equals(true)))
                 .Where(w => w.OwnerId.Equals(currentUserId))
-                .Where(w => w.Ad.Images.Any(i => i.isPoster.Equals(true)))
+                //.Where(w => w.Ad.Images.Any(i => i.isPoster.Equals(true)))
                 .ToListAsync();
 
             return Page();

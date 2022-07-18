@@ -25,8 +25,8 @@ namespace Entities.DTO
         public DateTime LastModified { get; set; }
 
         [Required(ErrorMessage = "Wiek zwierzęcia jest wymagany")]
-        [Range(0, 360, ErrorMessage = "Maksymalny wiek zwierzęcia to 30 lat (360 miesięcy).")]
-        public byte AgeAnimal { get; set; }
+        [Range(0, 1200, ErrorMessage = "Maksymalny wiek zwierzęcia to 100 lat (1200 miesięcy).")]
+        public int AgeAnimal { get; set; }
 
         [Required(ErrorMessage = "Płeć zwierzęcia jest wymagana.")]
         public Gender GenderAnimal { get; set; }
