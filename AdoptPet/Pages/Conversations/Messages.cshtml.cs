@@ -118,23 +118,17 @@ namespace AdoptPet.Pages.Conversations
             // change the status of the last message to just read
 
             currentUserId = UserManager.GetUserId(User);
-            var lastMsg = chat.Messages.OrderByDescending(m => m.DateOfSending).FirstOrDefault();
 
-            if (lastMsg != null && lastMsg.SendByUserId != currentUserId)
+            var unreadedMsgs = chat.Messages
+                                  .Where(m => m.Status.Equals(Message.ChatStatus.Nieodczytane))
+                                  .Where(m => m.SendByUserId != currentUserId)
+                                  .ToList();
+
+            if(unreadedMsgs != null)
             {
-                var lastMsgFromDb = _context.Message.Where(m => m.Id.Equals(lastMsg.Id)).FirstOrDefault();
-
-                if (lastMsgFromDb == null)
+                foreach(var item in unreadedMsgs)
                 {
-                    _notyfService.Error("B³¹d w przetwarzaniu danych");
-                    return RedirectToPage("./Conversations/Index");
-                }
-
-                if (lastMsg.SendByUserId == currentUserId)
-                {
-                    lastMsg.Status = Message.ChatStatus.Odczytane;
-
-                    _context.Entry(lastMsgFromDb).CurrentValues.SetValues(lastMsg);
+                    item.Status = Message.ChatStatus.Odczytane;
                 }
             }
 
