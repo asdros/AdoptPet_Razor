@@ -22,7 +22,7 @@
 	  <div class="row" style="border:1px solid green; padding:10px 10px">
 	   <div class="col">
 		<a asp-page="./Ads/Details" asp-route-link="@item.Ad.NormalizedLink">
-		 <img src="/images/@item.Ad.Id/@item.Ad.Images.SingleOrDefault().Name" class="watchItemPhoto" alt="@item.Ad.Images.SingleOrDefault().Name" />
+		 <img src="/images/@item.Ad.Id/@item.Ad.Images.FirstOrDefault().Name" class="watchItemPhoto" alt="@item.Ad.Images.FirstOrDefault().Name" />
 		</a>
 	   </div>
 	   <div class="col">

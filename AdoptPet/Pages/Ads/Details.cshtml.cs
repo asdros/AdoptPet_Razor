@@ -133,7 +133,7 @@ namespace AdoptPet.Pages.Ads
             await _context.SaveChangesAsync();
 
             _notyfService.Success("Dodano do listy obserwujących");
-            return Page();
+            return RedirectToPage("Details", new { link = ad.NormalizedLink });
         }
 
         public async Task<IActionResult> OnPostCreateNewChatAsync(Guid adId)
