@@ -69,6 +69,11 @@ namespace AdoptPet.Pages.Ads
                 return Forbid();
             }
 
+            if(AdFromDB.Status == AdStatus.Odrzucone)
+            {
+                return Forbid();
+            }
+
             Images = await _context.Image.Where(i => i.AdId.Equals(id))
                                                     .OrderBy(i => i.isPoster)
                                                     .ToListAsync();
