@@ -75,6 +75,12 @@ namespace AdoptPet.Pages.Manage
         #region adminUsersManage
         public async Task<IActionResult> OnPostRemoveModeratorAsync(string email)
         {
+            if(string.IsNullOrWhiteSpace(email))
+            {
+                _notyfService.Error("Przes³ano b³êdne dane");
+                return RedirectToPage("/Manage/Index");
+            }
+
             var user = await UserManager.FindByNameAsync(email);
 
             if (user == null)
@@ -99,6 +105,12 @@ namespace AdoptPet.Pages.Manage
 
         public async Task<IActionResult> OnPostAddModeratorAsync(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                _notyfService.Error("Przes³ano b³êdne dane");
+                return RedirectToPage("/Manage/Index");
+            }
+
             var user = await UserManager.FindByNameAsync(email);
 
             if (user == null)
@@ -126,8 +138,16 @@ namespace AdoptPet.Pages.Manage
 
         public async Task<IActionResult> OnPostAddBreedAsync(string name, int animalId)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                _notyfService.Error("Przes³ano b³êdne dane");
+                return RedirectToPage("/Manage/Index");
+            }
+
             //check if this species already exists in the database
-            var breedsFromDB = await _context.Animal.Where(a => a.Species.Equals(name)).ToListAsync();
+            var breedsFromDB = await _context.Breed
+                .Where(b => b.Name.ToLower().Equals(name.ToLower()) 
+                && b.AnimalId.Equals(animalId)).ToListAsync();
 
             if (breedsFromDB.Any())
             {
@@ -156,6 +176,12 @@ namespace AdoptPet.Pages.Manage
 
         public async Task<IActionResult> OnPostRemoveBreedAsync(string name, int animalId)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                _notyfService.Error("Przes³ano b³êdne dane");
+                return RedirectToPage("/Manage/Index");
+            }
+
             if (name == "inna")
             {
                 _notyfService.Error("Niedozwolona operacja usuniêcia rasy");
@@ -188,8 +214,14 @@ namespace AdoptPet.Pages.Manage
 
         public async Task<IActionResult> OnPostAddAnimalAsync(string name)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                _notyfService.Error("Przes³ano b³êdne dane");
+                return RedirectToPage("/Manage/Index");
+            }
+
             //check if this species already exists in the database
-            var animalsFromDB = await _context.Animal.Where(a => a.Species.Equals(name)).ToListAsync();
+            var animalsFromDB = await _context.Animal.Where(a => a.Species.ToLower().Equals(name.ToLower())).ToListAsync();
 
             if (animalsFromDB.Any())
             {
