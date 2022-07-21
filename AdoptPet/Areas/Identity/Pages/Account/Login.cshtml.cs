@@ -36,11 +36,11 @@ namespace AdoptPet.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Email jest wymagany.")]
+            [EmailAddress(ErrorMessage = "Niepoprawny format emailu.")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Hasło jest wymagane.")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
@@ -59,16 +59,12 @@ namespace AdoptPet.Areas.Identity.Pages.Account
 
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
             ReturnUrl = returnUrl;
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         
             if (ModelState.IsValid)
             {

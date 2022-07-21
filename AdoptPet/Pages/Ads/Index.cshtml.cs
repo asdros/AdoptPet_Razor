@@ -26,14 +26,16 @@ namespace AdoptPet.Pages.Ads
             _imageService = imageService;
         }
 
-        public IList<Ad> Ad { get; set; }
+        public IList<Ad> Ads { get; set; }
 
         [BindProperty]
         public Ad AdToDelete { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            var ads = await _context.Ad
+            var currentUserId = UserManager.GetUserId(User);
+
+            Ads = await _context.Ad
                 .Include(a => a.Breed)
                 .Include(a => a.Place)
                 .OrderByDescending(a => a.AvailableFrom)
@@ -43,14 +45,17 @@ namespace AdoptPet.Pages.Ads
             var isAuthorized = User.IsInRole(Constants.ManagersRole) ||
                                User.IsInRole(Constants.AdministratorsRole);
 
-            var currentUserId = UserManager.GetUserId(User);
 
-            if(!isAuthorized)
+            if (!isAuthorized)
             {
-                ads = ads.Where(a => a.OwnerId == currentUserId).ToList();
+                Ads = Ads.Where(a => a.OwnerId == currentUserId).ToList();
+                return Page();
             }
 
-            Ad = ads.ToList();
+            // rejected ads are visible only for author
+
+            Ads = Ads.Where(a => !(a.Status.Equals(AdStatus.Odrzucone))).ToList();
+            return Page();
         }
 
         public async Task<IActionResult> OnPostDelete(Guid? id)

@@ -37,11 +37,11 @@ namespace AdoptPet.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Email jest wymagany.")]
+            [EmailAddress(ErrorMessage = "Niepoprawny format emailu.")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Hasło jest wymagane.")]
             [StringLength(100, ErrorMessage = "Nowe hasło musi mieć pomiędzy {2} a {1} znaków.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             public string Password { get; set; }
