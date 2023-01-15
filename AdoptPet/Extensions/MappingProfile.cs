@@ -10,11 +10,10 @@ namespace AdoptPet.Extensions
         public MappingProfile()
         {
             CreateMap<Place, PlaceDTO>()
-                .ForMember(p => p.PlaceId, opt => 
-                    opt.MapFrom(s => s.Id))
-                .ForMember(p=>p.FullPlaceName, opt=> 
-                    opt.MapFrom(s=> string
-                        .Join(", ", s.Name, s.District.Name, s.District.Province.Name)));
+                .ForMember(p => p.PlaceId,
+                    opt => opt.MapFrom(s => s.Id))
+                .ForMember(p => p.FullPlaceName,
+                    opt => opt.MapFrom(s => string.Join(", ", s.Name, s.District.Name, s.District.Province.Name)));
 
             CreateMap<ImageForCreationDTO, Image>();
             CreateMap<AdForUpdateDTO, Ad>().ReverseMap();

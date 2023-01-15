@@ -62,9 +62,10 @@
 		</ul>
 	   </nav>
 	   <form method="post">
-		<input type="text" name="name" value="" placeholder="Wpisz rasę" />
+		<input type="text" name="name" value="" placeholder="Nazwa rasy" />
 		<button class="btn btn-info" type="button" id="showMenu">Akcja</button>
 		<div class="menuAnimalSpecies">
+		<label>Gatunek</label>
 		<select name="animalId" data-val-required="Wybór gatunku jest wymagany">
 	  @foreach (var animal in Model.Animals)
 						{
@@ -88,7 +89,7 @@
 		</ul>
 	   </nav>
 	   <form method="post">
-		<input type="text" name="name" value="" placeholder="Dodaj gatunek" />
+		<input type="text" name="name" value="" placeholder="Nazwa gatuneku" />
 		<button asp-page-handler="AddAnimal" class="btn btn-success">Dodaj</button>
 	   </form>
 	  </div>

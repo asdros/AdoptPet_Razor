@@ -9,7 +9,7 @@
 
 <hr />
 
-<div class="container ">
+@*<div class="container ">
  <div class="row justify-content-center">
 	 @if(!Model.WatchedItems.Any())
 		{
@@ -56,4 +56,57 @@
 		}
 		}
  </div>
+</div>*@
+
+
+<div class="container">
+    @if(!Model.WatchedItems.Any())
+		{
+			<h3>Pusta lista obserwowanych ogłoszeń</h3>
+		}
+		else
+		{
+		@foreach (var item in Model.WatchedItems)
+		{
+			<div class="row">
+				<div class="col-md-3"></div>
+				<div class="col-md-6" style="border:1px solid green; padding:10px 10px">
+					<div class="row">
+					<div class="col">
+						<a asp-page="./Ads/Details" asp-route-link="@item.Ad.NormalizedLink">
+							<img src="/images/@item.Ad.Id/@item.Ad.Images.SingleOrDefault().Name" class="watchItemPhoto mx-auto d-block" alt="@item.Ad.Images.SingleOrDefault().Name" />
+						</a>
+					</div>
+						   <div class="col">
+		<ul>
+		 <li>
+		  <a asp-page="./Ads/Details" asp-route-link="@item.Ad.NormalizedLink">
+								@item.Ad.Title
+		  </a>
+		 </li>
+		 <li>
+							@item.Ad.Breed.Animal.Species, @item.Ad.Breed.Name
+		 </li>
+		 <li>
+							@item.Ad.Place.Name
+		 </li>
+		</ul>
+		<div class="watchItemIcons">
+		 <!-- delete watchitem-->
+					<form asp-page-handler="delete" asp-route-id="@item.Id" method="post">
+		  <input type="image" class="btn btn-outline-dark trashWatchItem" src="./assets/trash.svg" />
+		 </form>
+
+		 <!-- redirect to ad-->
+		 					<a asp-page="./Ads/Details" asp-route-link="@item.Ad.NormalizedLink" class="btn btn-outline-dark forwardWatchItem">
+							 <img class="bi bi-box-arrow-in-right forwardWatchItem" src="./assets/box-arrow-in-right.svg" />
+</a>
+		</div>
+	   </div>
+	   </div>
+				</div>
+				<div class="col-md-3"></div>
+			</div>
+		}
+		}
 </div>

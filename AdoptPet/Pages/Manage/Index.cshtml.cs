@@ -62,10 +62,10 @@ namespace AdoptPet.Pages.Manage
 
             var managers = await UserManager.GetUsersInRoleAsync("Managers");
 
-            var managersUserName = managers.Select(x => x.UserName).ToList();
+            var managersUserName = managers.Select(x => x.UserName).Take(50).ToList();
 
             // get users without any role
-            var users = await UserManager.Users.Where(u => !managersUserName.Contains(u.UserName)).ToListAsync();
+            var users = await UserManager.Users.Where(u => !managersUserName.Contains(u.UserName)).Take(50).ToListAsync();
 
             Users = _mapper.Map<IList<UserDTO>>(users);
             Moderators = _mapper.Map<IList<UserDTO>>(managers);
@@ -188,7 +188,7 @@ namespace AdoptPet.Pages.Manage
                 return RedirectToPage("/Manage/Index");
             }
 
-            var animalFromDbForExistedAds = await _context.Breed.Where(b => b.AnimalId.Equals(animalId) && b.Name.Equals("inna")).SingleOrDefaultAsync();
+            var animalFromDbForExistedAds = await _context.Breed.Where(b => b.AnimalId.Equals(animalId) && b.Name.Equals("inna")).FirstOrDefaultAsync();
             var breedsFromDB = await _context.Breed.Where(b => b.Name.Equals(name)).ToListAsync();
 
             if (!breedsFromDB.Any())
@@ -231,6 +231,13 @@ namespace AdoptPet.Pages.Manage
 
             Animal.Species = name.ToLower();
             _context.Add(Animal);
+
+            await _context.SaveChangesAsync();
+
+            Breed.Name = "inna";
+            Breed.AnimalId = Animal.Id;
+
+            _context.Add(Breed);
 
             await _context.SaveChangesAsync();
 

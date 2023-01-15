@@ -40,7 +40,8 @@ div.posterImage {
 
 #imgMainSite {
     max-width: 90%;
-    max-height: 360px;
+    max-height: 200px;
+    border-radius: 10px;
 }
 
 .ui-autocomplete {
@@ -163,7 +164,7 @@ span.carousel-control-prev-icon {
 }
 
 .edit-thumb-image {
-    width: 350px;
+    width: 200px;
     position: relative;
     padding: 5px;
     border-radius: 5%;
@@ -174,8 +175,7 @@ span.carousel-control-prev-icon {
 }
 
 .watchItemPhoto {
-    max-width: 300px;
-    max-height: 300px;
+    max-width: 200px;
 }
 
 .trashWatchItem {

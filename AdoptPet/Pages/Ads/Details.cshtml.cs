@@ -58,15 +58,15 @@ namespace AdoptPet.Pages.Ads
                 .Include(a => a.Place.District.Province)
                 .FirstOrDefaultAsync(m => m.NormalizedLink == link);
 
-            Images = await _context.Image
-                .Where(i => 
-                        i.AdId.Equals(Ad.Id))
-                        .ToListAsync();
-
             if (Ad == null)
             {
                 return NotFound();
             }
+
+            Images = await _context.Image
+                .Where(i => 
+                        i.AdId.Equals(Ad.Id))
+                        .ToListAsync();
 
             Owner = await _context.Users.Where(u => u.Id == Ad.OwnerId).FirstOrDefaultAsync();
 
