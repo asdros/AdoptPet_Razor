@@ -58,7 +58,8 @@
 						<label asp-for="Ad.AgeAnimal" class="control-label">
 							Wiek zwierzęcia wyrażony w miesiącach
 						</label>
-						<input asp-for="Ad.AgeAnimal" class="form-control" min="0" step="1" placeholder="@Model.Ad.AgeAnimal" />
+						<input asp-for="Ad.AgeAnimal" class="form-control" id="ageInput" min="0" step="1" placeholder="@Model.Ad.AgeAnimal" />
+						<p id ="age-years"><ins></ins></p>
 						<span asp-validation-for="Ad.AgeAnimal" class="text-danger"></span>
 					</div>
 				</div>
@@ -146,6 +147,7 @@
  $(document).ready(function () {
   autocompletePlaceInput();
   imagePreview();
+  agePreview();
  });
 countUploadedImages();
 </script>

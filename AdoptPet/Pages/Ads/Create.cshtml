@@ -34,7 +34,8 @@ ViewData["Title"] = "Dodaj nowe ogłoszenie";
             <div class="col-md-5">
 	            <div class="form-group">
 	                 <label asp-for="Ad.AgeAnimal" class="control-label">Wiek zwierzęcia</label>
-	                 <input asp-for="Ad.AgeAnimal" class="form-control" min="0" step="1" placeholder="Wyrażony w miesiącach" />
+	                 <input asp-for="Ad.AgeAnimal" class="form-control" id="ageInput" min="0" step="1" placeholder="Wyrażony w miesiącach" />
+                     <p id ="age-years"><ins></ins></p>
 	                 <span asp-validation-for="Ad.AgeAnimal" class="text-danger"></span>
 	            </div>                
             </div>
@@ -121,6 +122,7 @@ ViewData["Title"] = "Dodaj nowe ogłoszenie";
         imagePreview();
         breedsDropDownList();
         autocompletePlaceInput();
+        agePreview();
     });
     validateCreationForm();
     validateImages();

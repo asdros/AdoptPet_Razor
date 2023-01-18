@@ -145,3 +145,12 @@ function removeEmptyFieldsFromForm() {
         return true; // ensure form still submits
     });
 };
+
+function agePreview() {
+    $("#ageInput").on('change', function () {
+        var numberOfMonth = document.getElementById('ageInput').value;
+        if (!isNaN(numberOfMonth)) {
+            document.getElementById('age-years').innerHTML = "<ins>Wiek zwierzęcia w latach: " + Math.round(numberOfMonth / 12 * 10) / 12 + ".</ins>";
+        }
+    });
+};
