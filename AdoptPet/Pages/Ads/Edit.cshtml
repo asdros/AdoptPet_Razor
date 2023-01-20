@@ -12,8 +12,8 @@
 		<div class="row justify-content-center">
 			@foreach (var image in Model.Images)
 			{
-				<div class="col-md-4 offset-sm-2">
-					<img src="/images/@Model.AdFromDB.Id/@image.Name" class="edit-thumb-image" alt="@image.Name" />
+				<div class="col-md-4">
+					<img src="/images/@Model.AdFromDB.Id/@image.Name" class="edit-thumb-image mx-auto d-block" alt="@image.Name" />
 					@if (!image.isPoster)
 					{
 						<form method="post" asp-page-handler="DeleteImage">

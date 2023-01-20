@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using AdoptPet.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using AdoptPet.Areas.Authorization;
+using System.Globalization;
 
 namespace AdoptPet
 {
@@ -54,6 +55,11 @@ namespace AdoptPet
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            var cultureInfo = new CultureInfo("pl-PL");
+
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
