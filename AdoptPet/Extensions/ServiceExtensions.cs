@@ -30,7 +30,8 @@ namespace AdoptPet.Extensions
         public static void ConfigureDefaultIdentity(this IServiceCollection services) =>
             services.AddDefaultIdentity<IdentityUser>()
                     .AddRoles<IdentityRole>()
-                    .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddErrorDescriber<CustomIdentityErrorDescriber>();
 
         public static void ConfigureAuthorization(this IServiceCollection services) =>
             services.AddControllers(config =>
