@@ -79,52 +79,6 @@ namespace AdoptPet.Data.Migrations
 
                     b.ToTable("Ad");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("8e23fb77-0a52-4e65-8d52-753ba1a6be4f"),
-                            AgeAnimal = (byte)0,
-                            AvailableFrom = new DateTime(2022, 2, 27, 14, 32, 27, 497, DateTimeKind.Local).AddTicks(9512),
-                            BreedId = 2,
-                            Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-                            Deworming = true,
-                            GenderAnimal = 0,
-                            NormalizedLink = "slicz-6Ez4M",
-                            PlaceId = 1,
-                            Status = 0,
-                            Sterilization = true,
-                            Title = "Śliczny kotek"
-                        },
-                        new
-                        {
-                            Id = new Guid("25c3424d-79cd-40ca-a4e3-d71a14635141"),
-                            AgeAnimal = (byte)0,
-                            AvailableFrom = new DateTime(2022, 2, 27, 14, 32, 27, 498, DateTimeKind.Local).AddTicks(1170),
-                            BreedId = 1,
-                            Description = "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.",
-                            Deworming = true,
-                            GenderAnimal = 0,
-                            NormalizedLink = "kot-b-KWMfu",
-                            PlaceId = 3,
-                            Status = 0,
-                            Sterilization = false,
-                            Title = "kot Bajtek"
-                        },
-                        new
-                        {
-                            Id = new Guid("dde9be6e-6ff8-4c9e-b844-387b7f4ec5a9"),
-                            AgeAnimal = (byte)0,
-                            AvailableFrom = new DateTime(2022, 2, 27, 14, 32, 27, 498, DateTimeKind.Local).AddTicks(1259),
-                            BreedId = 3,
-                            Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ",
-                            Deworming = true,
-                            GenderAnimal = 0,
-                            NormalizedLink = "azore-ARV_S",
-                            PlaceId = 3,
-                            Status = 0,
-                            Sterilization = true,
-                            Title = "Azorek"
-                        });
                 });
 
             modelBuilder.Entity("Entities.Models.Animal", b =>
@@ -216,25 +170,6 @@ namespace AdoptPet.Data.Migrations
 
                     b.ToTable("District");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "złotowski",
-                            ProvinceId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "pilski",
-                            ProvinceId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "płocki",
-                            ProvinceId = 2
-                        });
                 });
 
             modelBuilder.Entity("Entities.Models.Image", b =>
@@ -262,28 +197,6 @@ namespace AdoptPet.Data.Migrations
 
                     b.ToTable("Image");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
-                            AdId = new Guid("8e23fb77-0a52-4e65-8d52-753ba1a6be4f"),
-                            Name = "cat.jpg",
-                            isPoster = true
-                        },
-                        new
-                        {
-                            Id = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991871"),
-                            AdId = new Guid("dde9be6e-6ff8-4c9e-b844-387b7f4ec5a9"),
-                            Name = "catNOP.jpg",
-                            isPoster = true
-                        },
-                        new
-                        {
-                            Id = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991872"),
-                            AdId = new Guid("25c3424d-79cd-40ca-a4e3-d71a14635141"),
-                            Name = "dog.jpg",
-                            isPoster = true
-                        });
                 });
 
             modelBuilder.Entity("Entities.Models.Place", b =>
@@ -306,25 +219,6 @@ namespace AdoptPet.Data.Migrations
 
                     b.ToTable("Place");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DistrictId = 1,
-                            Name = "Złotów"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DistrictId = 1,
-                            Name = "Piła"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DistrictId = 2,
-                            Name = "Płock"
-                        });
                 });
 
             modelBuilder.Entity("Entities.Models.Province", b =>
@@ -342,17 +236,6 @@ namespace AdoptPet.Data.Migrations
 
                     b.ToTable("Province");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "wielkopolskie"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "mazowiecki"
-                        });
                 });
 
             modelBuilder.Entity("Entities.Models.WatchedItem", b =>
@@ -374,22 +257,6 @@ namespace AdoptPet.Data.Migrations
 
                     b.ToTable("WatchedItem");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("6a183cf8-7b8e-4bec-828c-7fd506880dde"),
-                            AdId = new Guid("25c3424d-79cd-40ca-a4e3-d71a14635141")
-                        },
-                        new
-                        {
-                            Id = new Guid("17457cfd-63f5-4f6e-9ff1-b5ada7a4ea2a"),
-                            AdId = new Guid("8e23fb77-0a52-4e65-8d52-753ba1a6be4f")
-                        },
-                        new
-                        {
-                            Id = new Guid("57050acd-c26b-46fd-a0f7-0718b6c84eb4"),
-                            AdId = new Guid("25c3424d-79cd-40ca-a4e3-d71a14635141")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
