@@ -21,16 +21,6 @@ namespace AdoptPet.Data
                 .WithMany(a => a.Images)
                 .HasForeignKey(i => i.AdId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            //modelBuilder.ApplyConfiguration(new DistrictConfiguration());
-            //modelBuilder.ApplyConfiguration(new ProvinceConfiguration());
-            //modelBuilder.ApplyConfiguration(new PlaceConfiguration());
-
-            //modelBuilder.ApplyConfiguration(new AdConfiguration());
-            //modelBuilder.ApplyConfiguration(new AnimalConfiguration());
-            //modelBuilder.ApplyConfiguration(new BreedConfiguration());
-            //modelBuilder.ApplyConfiguration(new ImageConfiguration());
-            //modelBuilder.ApplyConfiguration(new WatchedItemConfiguration());
         }
 
         public DbSet<Province> Province { get; set; }
